@@ -1,0 +1,1383 @@
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+        * { -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, sans-serif;
+            background-color: #0a0a0a; color: #e5e5e5;
+            position: relative; overflow: hidden;
+        }
+        body.light { background-color: #fafafa; color: #18181b; }
+        body.light .lobe-panel { background-color: #ffffff !important; border-color: rgba(0,0,0,0.06) !important; }
+        body.light .lobe-border { border-color: rgba(0,0,0,0.06) !important; }
+        body.light .lobe-text { color: #18181b !important; }
+        body.light .lobe-text-dim { color: #52525b !important; }
+        body.light .lobe-text-mute { color: #a1a1aa !important; }
+        body.light .lobe-input-inner { background: #ffffff !important; }
+        body.light .lobe-markdown strong { color: #18181b !important; }
+        body.light .lobe-markdown code { background: rgba(0,0,0,0.06); }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+        body.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
+
+        /* Input gradient border */
+        .lobe-input-wrap { position: relative; border-radius: 18px; padding: 1px; background: rgba(255,255,255,0.06); transition: background 0.3s; }
+        body.light .lobe-input-wrap { background: rgba(0,0,0,0.08); }
+        .lobe-input-wrap:focus-within {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            animation: glow-border 3s ease infinite;
+        }
+        @keyframes glow-border { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        /* Typing */
+        .typing-dot { width: 5px; height: 5px; background: #a5b4fc; border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%,80%,100% { transform: scale(0.6); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+
+        @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fade-in 0.3s ease-out; }
+
+        /* History item */
+        .history-item { transition: all 0.15s; position: relative; border-radius: 10px; }
+        .history-item:hover { background: rgba(255,255,255,0.04); }
+        body.light .history-item:hover { background: rgba(0,0,0,0.04); }
+        .history-item.active { background: rgba(255,255,255,0.06); }
+        body.light .history-item.active { background: rgba(0,0,0,0.06); }
+        .history-item .delete-btn { opacity: 0; transition: opacity 0.15s; }
+        .history-item:hover .delete-btn { opacity: 1; }
+
+        /* AI actions */
+        .ai-actions { opacity: 0; transition: opacity 0.15s; }
+        .ai-msg:hover .ai-actions { opacity: 1; }
+
+        /* Action buttons */
+        .act-btn { padding: 5px; border-radius: 6px; color: #737373; transition: all 0.15s; cursor: pointer; }
+        .act-btn:hover { background: rgba(255,255,255,0.06); color: #e5e5e5; }
+        body.light .act-btn { color: #a1a1aa; }
+        body.light .act-btn:hover { background: rgba(0,0,0,0.05); color: #18181b; }
+        .act-btn.speaking { color: #a5b4fc !important; animation: pulse-speak 1s infinite; }
+        @keyframes pulse-speak { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+        /* Modals */
+        .lobe-modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 20px; }
+        .lobe-modal-overlay.active { display: flex; }
+        .lobe-modal {
+            background: #171717; border-radius: 20px; padding: 28px;
+            width: 100%; max-width: 420px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+            animation: fade-in 0.25s ease-out;
+        }
+        body.light .lobe-modal { background: #ffffff; border-color: rgba(0,0,0,0.06); }
+
+        /* Inputs */
+        .lobe-input {
+            width: 100%; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 11px 14px; font-size: 14px;
+            color: #e5e5e5; outline: none; transition: all 0.2s;
+        }
+        .lobe-input::placeholder { color: #525252; }
+        .lobe-input:focus { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.05); }
+        body.light .lobe-input { background: #fafafa; border-color: rgba(0,0,0,0.08); color: #18181b; }
+
+        /* Tabs */
+        .lobe-tab { padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; color: #737373; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .lobe-tab:hover { background: rgba(255,255,255,0.04); color: #e5e5e5; }
+        body.light .lobe-tab:hover { background: rgba(0,0,0,0.04); color: #18181b; }
+        .lobe-tab.active { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+        body.light .lobe-tab.active { background: rgba(99,102,241,0.1); color: #6366f1; }
+
+        /* Toggle */
+        .lobe-toggle { position: relative; width: 40px; height: 22px; background: rgba(255,255,255,0.1); border-radius: 11px; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+        body.light .lobe-toggle { background: rgba(0,0,0,0.1); }
+        .lobe-toggle.active { background: #6366f1; }
+        .lobe-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 0.2s; }
+        .lobe-toggle.active::after { transform: translateX(18px); }
+
+        /* Social */
+        .lobe-social { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); transition: all 0.2s; cursor: pointer; width: 100%; }
+        .lobe-social:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); }
+        body.light .lobe-social { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+        .lobe-social-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        /* Search */
+        .lobe-search { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 8px 12px 8px 32px; font-size: 13px; outline: none; color: #e5e5e5; transition: all 0.15s; }
+        .lobe-search::placeholder { color: #525252; }
+        .lobe-search:focus { background: rgba(255,255,255,0.06); border-color: rgba(99,102,241,0.4); }
+        body.light .lobe-search { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.06); color: #18181b; }
+
+        /* User rows */
+        .lobe-user-row { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px; transition: all 0.15s; }
+        .lobe-user-row:hover { background: rgba(255,255,255,0.03); }
+        body.light .lobe-user-row:hover { background: rgba(0,0,0,0.03); }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: white; font-size: 12px; flex-shrink: 0; }
+        .role-badge { font-size: 10px; padding: 2px 7px; border-radius: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+        .role-admin { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; }
+        .role-user { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+        .role-guest { background: rgba(161,161,170,0.15); color: #a1a1aa; }
+
+        /* Markdown */
+        .lobe-markdown p { margin-bottom: 0.6rem; }
+        .lobe-markdown p:last-child { margin-bottom: 0; }
+        .lobe-markdown strong { color: #fafafa; font-weight: 600; }
+        .lobe-markdown ul, .lobe-markdown ol { padding-left: 1.4rem; margin-bottom: 0.6rem; }
+        .lobe-markdown ul { list-style-type: disc; }
+        .lobe-markdown ol { list-style-type: decimal; }
+        .lobe-markdown code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 5px; font-size: 0.88em; font-family: ui-monospace, monospace; }
+        .lobe-markdown pre { background: #0a0a0a; padding: 12px 14px; border-radius: 10px; overflow-x: auto; margin-bottom: 0.6rem; border: 1px solid rgba(255,255,255,0.06); }
+        .lobe-markdown pre code { background: transparent; padding: 0; color: #e5e5e5; }
+        .lobe-markdown h1, .lobe-markdown h2, .lobe-markdown h3 { font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        .lobe-panel { background: #111111; border: 1px solid rgba(255,255,255,0.06); }
+        body.light .lobe-panel { background: #ffffff; border-color: rgba(0,0,0,0.06); }
+
+        /* Mobile sidebar */
+        #mobileSidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 85%; max-width: 320px; background: #0f0f0f; border-right: 1px solid rgba(255,255,255,0.06); z-index: 60; transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); display: flex; flex-direction: column; }
+        body.light #mobileSidebar { background: #ffffff; }
+        #mobileSidebar.active { transform: translateX(0); }
+        #mobileSidebarOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 55; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        #mobileSidebarOverlay.active { opacity: 1; pointer-events: auto; }
+
+        /* Settings panel */
+        #settingsOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        #settingsOverlay.active { opacity: 1; pointer-events: auto; }
+        #settingsPanel { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 440px; background: #0f0f0f; border-left: 1px solid rgba(255,255,255,0.06); z-index: 50; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); display: flex; flex-direction: column; }
+        body.light #settingsPanel { background: #ffffff; border-color: rgba(0,0,0,0.06); }
+        #settingsPanel.active { transform: translateX(0); }
+
+        /* ============ DISCOVER SPECIFIC ============ */
+        .category-pill {
+            padding: 8px 16px; border-radius: 20px;
+            font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #a1a1aa;
+            white-space: nowrap;
+        }
+        body.light .category-pill { background: #ffffff; border-color: rgba(0,0,0,0.06); color: #71717a; }
+        .category-pill:hover { background: rgba(255,255,255,0.08); color: #e5e5e5; }
+        body.light .category-pill:hover { background: #f4f4f5; color: #18181b; }
+        .category-pill.active {
+            background: rgba(99,102,241,0.15);
+            border-color: rgba(99,102,241,0.4);
+            color: #a5b4fc;
+        }
+        body.light .category-pill.active { background: rgba(99,102,241,0.1); color: #6366f1; }
+
+        /* Agent card */
+        .agent-card {
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        body.light .agent-card { background: #ffffff; border-color: rgba(0,0,0,0.05); }
+        .agent-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.6), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .agent-card:hover {
+            border-color: rgba(99,102,241,0.3);
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.04);
+            box-shadow: 0 12px 32px -8px rgba(99,102,241,0.2);
+        }
+        body.light .agent-card:hover { background: #fafafa; box-shadow: 0 12px 32px -8px rgba(99,102,241,0.15); }
+        .agent-card:hover::before { opacity: 1; }
+
+        .agent-emoji {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            background: rgba(255,255,255,0.04);
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        body.light .agent-emoji { background: rgba(0,0,0,0.03); }
+        .agent-card:hover .agent-emoji { transform: scale(1.08) rotate(-4deg); }
+
+        .agent-tag {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            color: #71717a;
+            margin-right: 4px;
+            margin-top: 4px;
+        }
+        body.light .agent-tag { background: rgba(0,0,0,0.04); }
+
+        /* Featured cards (lá»›n hÆ¡n) */
+        .featured-card {
+            padding: 20px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.08));
+            border: 1px solid rgba(99,102,241,0.15);
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        body.light .featured-card { background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(168,85,247,0.05)); }
+        .featured-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99,102,241,0.4);
+            box-shadow: 0 16px 40px -12px rgba(99,102,241,0.3);
+        }
+        .featured-card .agent-emoji { background: rgba(255,255,255,0.08); width: 52px; height: 52px; font-size: 28px; }
+        body.light .featured-card .agent-emoji { background: rgba(255,255,255,0.7); }
+
+        /* View transitions */
+        .view { animation: fade-in 0.35s ease-out; }
+    </style>
+<style>body{text-align:left!important;margin:0!important}</style>
+<style>
+#appRoot{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;background-color:#0a0a0a;color:#e5e5e5;position:relative;overflow:hidden;}
+body.light #appRoot{background-color:#fafafa;color:#18181b;}
+</style>
+<div id="appRoot" class="h-screen w-full flex">
+<!-- ============ SIDEBAR DESKTOP ============ -->
+    <aside class="w-\[260px\] lobe-panel hidden md:flex flex-col z-10 m-3 rounded-2xl overflow-hidden">
+        <div class="p-3 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center shadow-md shadow-purple-500/20">
+                    <i data-lucide="command" class="w-3.5 h-3.5 text-white"></i>
+                </div>
+                <span class="font-semibold text-\[15px\] tracking-tight lobe-text">NhÃ  MÃ¬nh</span>
+            </div>
+            <button onclick="newChat()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-dim" title="Chat má»›i">
+                <i data-lucide="square-pen" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- MAIN MENU -->
+        <div class="px-2 pb-2 flex-shrink-0 space-y-0.5">
+            <button onclick="showView('discover')" id="menuDiscover" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-\[13px\] transition-all">
+                <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                <span>KhÃ¡m phÃ¡</span>
+            </button>
+            <button onclick="showView('chat')" id="menuChat" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-\[13px\] transition-all">
+                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                <span>TrÃ² chuyá»‡n</span>
+            </button>
+        </div>
+
+        <!-- Search -->
+        <div class="px-3 pb-2 flex-shrink-0">
+            <div class="relative">
+                <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 lobe-text-mute"></i>
+                <input id="searchInput" type="text" placeholder="TÃ¬m cuá»™c trÃ² chuyá»‡n..." class="lobe-search" oninput="filterHistory(this.value)">
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="flex-1 overflow-y-auto px-2 py-2">
+            <div class="flex items-center justify-between px-2.5 mb-1.5">
+                <div class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Gáº§n Ä‘Ã¢y</div>
+                <button onclick="clearAllHistory()" class="lobe-text-mute hover:text-red-400 transition-colors" title="XÃ³a táº¥t cáº£">
+                    <i data-lucide="trash-2" class="w-3 h-3"></i>
+                </button>
+            </div>
+            <div id="historyList" class="space-y-0.5"></div>
+        </div>
+
+        <!-- User -->
+        <div class="p-2 border-t lobe-border flex-shrink-0">
+            <button onclick="openSettings()" class="flex items-center gap-2.5 w-full p-2 hover:bg-white/\[0.04\] rounded-lg transition-all">
+                <div id="currentUserAvatar" class="w-7 h-7 rounded-full flex items-center justify-center text-\[10px\] font-bold text-white">GÄ</div>
+                <div class="flex-1 overflow-hidden text-left">
+                    <div id="currentUserName" class="text-\[12px\] font-medium lobe-text truncate">Gia Ä‘Ã¬nh</div>
+                    <div id="currentUserRole" class="text-\[10px\] lobe-text-mute">KhÃ¡ch</div>
+                </div>
+                <i data-lucide="settings" class="w-3.5 h-3.5 lobe-text-mute"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="flex-1 min-w-0 flex flex-col relative z-10 m-3 md:ml-0">
+
+        <!-- Mobile header -->
+        <header class="md:hidden h-12 lobe-panel rounded-xl flex items-center justify-between px-3 mb-3">
+            <button onclick="openMobileSidebar()" class="p-1.5 lobe-text-dim"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            <span class="font-medium text-\[14px\] lobe-text" id="mobileTitle">KhÃ¡m phÃ¡</span>
+            <div class="flex items-center">
+                <button onclick="toggleTheme()" class="p-1.5 lobe-text-dim"><i data-lucide="sun-moon" class="w-5 h-5"></i></button>
+            </div>
+        </header>
+
+        <!-- ============ VIEW: DISCOVER ============ -->
+        <div id="viewDiscover" class="view flex-1 flex flex-col overflow-hidden">
+            <div class="flex-1 overflow-y-auto px-4 md:px-8 py-4">
+                <div class="max-w-5xl mx-auto">
+                    <!-- Hero -->
+                    <div class="mb-6">
+                        <h1 class="text-2xl md:text-3xl font-semibold lobe-text mb-1.5">KhÃ¡m phÃ¡ AI Agents</h1>
+                        <p class="text-\[13px\] lobe-text-dim">Chá»n má»™t trá»£ lÃ½ Ä‘á»ƒ báº¯t Ä‘áº§u trÃ² chuyá»‡n</p>
+                    </div>
+
+                    <!-- Big search -->
+                    <div class="relative mb-6">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 lobe-text-mute"></i>
+                        <input id="agentSearchInput" type="text" placeholder="TÃ¬m kiáº¿m agent theo tÃªn, mÃ´ táº£, tag..." 
+                            class="w-full bg-white/\[0.03\] border border-white/\[0.08\] rounded-xl pl-11 pr-4 py-3.5 text-\[14px\] outline-none focus:border-indigo-500/40 focus:bg-white/\[0.05\] transition-all lobe-text"
+                            oninput="renderAgents()">
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="flex gap-2 overflow-x-auto pb-3 mb-6 -mx-1 px-1">
+                        <button class="category-pill active" data-cat="all" onclick="setCategory('all')">âœ¨ Táº¥t cáº£</button>
+                        <button class="category-pill" data-cat="creative" onclick="setCategory('creative')">ðŸŽ¨ SÃ¡ng táº¡o</button>
+                        <button class="category-pill" data-cat="study" onclick="setCategory('study')">ðŸ“š Há»c táº­p</button>
+                        <button class="category-pill" data-cat="family" onclick="setCategory('family')">ðŸ  Gia Ä‘Ã¬nh</button>
+                        <button class="category-pill" data-cat="work" onclick="setCategory('work')">ðŸ’¼ CÃ´ng viá»‡c</button>
+                        <button class="category-pill" data-cat="fun" onclick="setCategory('fun')">ðŸŽ® Vui chÆ¡i</button>
+                        <button class="category-pill" data-cat="love" onclick="setCategory('love')">ðŸ’• TÃ¬nh cáº£m</button>
+                    </div>
+
+                    <!-- Featured (chá»‰ hiá»‡n khi "Táº¥t cáº£") -->
+                    <div id="featuredSection" class="mb-8">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-\[15px\] font-semibold lobe-text">ðŸ”¥ Ná»•i báº­t</h2>
+                        </div>
+                        <div id="featuredGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                    </div>
+
+                    <!-- All agents -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-\[15px\] font-semibold lobe-text" id="agentsSectionTitle">Táº¥t cáº£ Agents</h2>
+                            <span class="text-\[11px\] lobe-text-mute" id="agentsCount"></span>
+                        </div>
+                        <div id="agentsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ VIEW: CHAT ============ -->
+        <div id="viewChat" class="view flex-1 flex-col overflow-hidden hidden">
+            <!-- Agent header -->
+            <div id="chatHeader" class="px-4 md:px-8 py-3 flex items-center gap-3 border-b lobe-border flex-shrink-0">
+                <button onclick="showView('discover')" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-dim md:hidden">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </button>
+                <div id="chatAgentEmoji" class="w-8 h-8 rounded-lg flex items-center justify-center text-lg bg-white/\[0.04\]">âœ¨</div>
+                <div class="flex-1 min-w-0">
+                    <div id="chatAgentName" class="text-\[14px\] font-medium lobe-text truncate">HÃ  My</div>
+                    <div id="chatAgentDesc" class="text-\[11px\] lobe-text-mute truncate">Trá»£ lÃ½ AI</div>
+                </div>
+                <button onclick="openSettings()" class="hidden md:flex p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute" title="CÃ i Ä‘áº·t">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div id="chatContainer" class="flex-1 overflow-y-auto px-4 md:px-8 scroll-smooth">
+                <div id="welcomeScreen" class="flex flex-col items-center justify-center h-full max-w-2xl mx-auto text-center">
+                    <div id="welcomeEmoji" class="text-5xl mb-4">âœ¨</div>
+                    <h1 id="welcomeTitle" class="text-xl md:text-2xl font-semibold lobe-text mb-2">Xin chÃ o</h1>
+                    <p id="welcomeSubtitle" class="text-\[13px\] lobe-text-dim mb-6 max-w-md">Chá»n má»™t agent Ä‘á»ƒ báº¯t Ä‘áº§u</p>
+                    <button onclick="showView('discover')" class="px-4 py-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-xl text-\[13px\] font-medium shadow-md shadow-purple-500/20 hover:shadow-lg transition-all flex items-center gap-2">
+                        <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                        <span>KhÃ¡m phÃ¡ Agents</span>
+                    </button>
+                </div>
+                <div id="messagesArea" class="space-y-6 max-w-3xl mx-auto py-4"></div>
+            </div>
+
+            <!-- Input -->
+            <div class="px-4 md:px-8 pt-2 pb-4 flex-shrink-0">
+                <div class="lobe-input-wrap max-w-3xl mx-auto">
+                    <div class="lobe-input-inner rounded-\[17px\] relative" style="background: #111111;">
+                        <textarea id="messageInput" rows="1" 
+                            class="w-full bg-transparent lobe-text placeholder-zinc-600 px-4 py-3.5 pr-28 resize-none outline-none max-h-48 overflow-y-auto text-\[14px\]" 
+                            placeholder="Nháº­p tin nháº¯n..."
+                            oninput="this.style.height = ''; this.style.height = Math.min(this.scrollHeight, 200) + 'px'"></textarea>
+                        <div class="absolute right-2 bottom-2 flex items-center gap-0.5">
+                            <button class="p-2 lobe-text-mute hover:lobe-text hover:bg-white/5 rounded-lg transition-all"><i data-lucide="paperclip" class="w-4 h-4"></i></button>
+                            <button class="p-2 lobe-text-mute hover:lobe-text hover:bg-white/5 rounded-lg transition-all"><i data-lucide="mic" class="w-4 h-4"></i></button>
+                            <button id="sendBtn" class="p-2 bg-gradient-to-tr from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-white rounded-lg transition-all shadow-md shadow-purple-500/20 transform active:scale-95">
+                                <i data-lucide="arrow-up" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center text-\[10px\] lobe-text-mute mt-2 tracking-wide">
+                    AI cÃ³ thá»ƒ máº¯c lá»—i. HÃ£y kiá»ƒm tra thÃ´ng tin quan trá»ng.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MOBILE SIDEBAR -->
+    <div id="mobileSidebarOverlay" onclick="closeMobileSidebar()"></div>
+    <div id="mobileSidebar">
+        <div class="p-3 flex items-center justify-between border-b lobe-border flex-shrink-0">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <i data-lucide="command" class="w-3.5 h-3.5 text-white"></i>
+                </div>
+                <span class="font-semibold text-\[15px\] lobe-text">NhÃ  MÃ¬nh</span>
+            </div>
+            <button onclick="closeMobileSidebar()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div class="p-3 flex-shrink-0 space-y-1">
+            <button onclick="showView('discover'); closeMobileSidebar();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-\[13px\] hover:bg-white/\[0.04\] lobe-text">
+                <i data-lucide="compass" class="w-4 h-4"></i><span>KhÃ¡m phÃ¡</span>
+            </button>
+            <button onclick="showView('chat'); closeMobileSidebar();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-\[13px\] hover:bg-white/\[0.04\] lobe-text">
+                <i data-lucide="message-square" class="w-4 h-4"></i><span>TrÃ² chuyá»‡n</span>
+            </button>
+            <button onclick="newChat(); showView('discover'); closeMobileSidebar();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-\[13px\] hover:bg-white/\[0.04\] lobe-text">
+                <i data-lucide="square-pen" class="w-4 h-4"></i><span>Chat má»›i</span>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto px-2 py-2">
+            <div class="text-\[10px\] font-semibold lobe-text-mute px-2.5 mb-1.5 uppercase tracking-wider">Gáº§n Ä‘Ã¢y</div>
+            <div id="mobileHistoryList" class="space-y-0.5"></div>
+        </div>
+        <div class="p-2 border-t lobe-border flex-shrink-0">
+            <button onclick="openSettings(); closeMobileSidebar();" class="flex items-center gap-2.5 w-full p-2 hover:bg-white/\[0.04\] rounded-lg">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-\[10px\] font-bold text-white">GÄ</div>
+                <div class="flex-1 overflow-hidden text-left">
+                    <div class="text-\[12px\] font-medium lobe-text truncate">Gia Ä‘Ã¬nh</div>
+                    <div class="text-\[10px\] lobe-text-mute">KhÃ¡ch</div>
+                </div>
+                <i data-lucide="settings" class="w-3.5 h-3.5 lobe-text-mute"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settingsOverlay" onclick="closeSettings()"></div>
+    <div id="settingsPanel">
+        <div class="p-4 flex items-center justify-between border-b lobe-border flex-shrink-0">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 bg-white/5 rounded-lg flex items-center justify-center"><i data-lucide="settings" class="w-3.5 h-3.5 lobe-text"></i></div>
+                <h2 class="font-semibold text-\[14px\] lobe-text">CÃ i Ä‘áº·t</h2>
+            </div>
+            <button onclick="closeSettings()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+
+        <div class="px-4 pt-3 flex gap-1.5 overflow-x-auto flex-shrink-0">
+            <button id="tabProfile" class="lobe-tab active" onclick="switchTab('profile')"><i data-lucide="user" class="w-3.5 h-3.5"></i><span>CÃ¡ nhÃ¢n</span></button>
+            <button id="tabAppearance" class="lobe-tab" onclick="switchTab('appearance')"><i data-lucide="palette" class="w-3.5 h-3.5"></i><span>Giao diá»‡n</span></button>
+            <button id="tabUsers" class="lobe-tab hidden" onclick="switchTab('users')"><i data-lucide="users" class="w-3.5 h-3.5"></i><span>NgÆ°á»i dÃ¹ng</span></button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4">
+            <div id="paneProfile" class="space-y-6">
+                <div class="flex items-center gap-3.5 p-3 bg-white/\[0.02\] rounded-xl border lobe-border">
+                    <div id="profileAvatar" class="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold text-white">GÄ</div>
+                    <div class="flex-1">
+                        <div id="profileName" class="font-semibold lobe-text text-\[15px\]">Gia Ä‘Ã¬nh</div>
+                        <div id="profileRole" class="text-\[11px\] lobe-text-mute mt-0.5">KhÃ¡ch</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2.5">
+                        <i data-lucide="link-2" class="w-3 h-3 lobe-text-mute"></i>
+                        <h3 class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">LiÃªn káº¿t tÃ i khoáº£n</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="linkAccount('google')" class="lobe-social">
+                            <div class="flex items-center gap-3">
+                                <div class="lobe-social-icon" style="background:#fff;border:1px solid #e4e4e7;">
+                                    <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.2 5.2C41 35.5 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
+                                </div>
+                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Google</div><div class="text-\[10px\] lobe-text-mute">ÄÄƒng nháº­p báº±ng Gmail</div></div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 lobe-text-mute"></i>
+                        </button>
+                        <button onclick="linkAccount('apple')" class="lobe-social">
+                            <div class="flex items-center gap-3">
+                                <div class="lobe-social-icon" style="background:#000;"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg></div>
+                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Apple</div><div class="text-\[10px\] lobe-text-mute">ÄÄƒng nháº­p báº±ng Apple ID</div></div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 lobe-text-mute"></i>
+                        </button>
+                        <button onclick="linkAccount('facebook')" class="lobe-social">
+                            <div class="flex items-center gap-3">
+                                <div class="lobe-social-icon" style="background:#1877F2;"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Facebook</div><div class="text-\[10px\] lobe-text-mute">ÄÄƒng nháº­p báº±ng Facebook</div></div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 lobe-text-mute"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="adminLoginSection">
+                    <button onclick="openAdminLogin()" class="w-full p-3 bg-white/\[0.04\] hover:bg-white/\[0.08\] border lobe-border lobe-text rounded-xl text-\[13px\] font-medium transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>ÄÄƒng nháº­p quáº£n trá»‹</span>
+                    </button>
+                </div>
+                <div id="adminLogoutSection" class="hidden">
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mb-2.5">
+                        <div class="flex items-center gap-2 text-amber-400 text-\[12px\] font-medium">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>Báº¡n Ä‘ang á»Ÿ cháº¿ Ä‘á»™ Quáº£n trá»‹</span>
+                        </div>
+                    </div>
+                    <button onclick="logoutAdmin()" class="w-full p-3 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl text-\[13px\] font-medium transition-all">ThoÃ¡t cháº¿ Ä‘á»™ quáº£n trá»‹</button>
+                </div>
+            </div>
+
+            <div id="paneAppearance" class="space-y-6 hidden">
+                <div>
+                    <div class="flex items-center gap-2 mb-2.5">
+                        <i data-lucide="palette" class="w-3 h-3 lobe-text-mute"></i>
+                        <h3 class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Giao diá»‡n</h3>
+                    </div>
+                    <div class="bg-white/\[0.02\] rounded-xl border lobe-border divide-y divide-white/\[0.04\] overflow-hidden">
+                        <div class="flex items-center justify-between p-3.5">
+                            <div class="flex items-center gap-2.5"><i data-lucide="sun-moon" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Cháº¿ Ä‘á»™ SÃ¡ng</span></div>
+                            <div id="themeToggle" class="lobe-toggle" onclick="toggleTheme()"></div>
+                        </div>
+                        <div class="flex items-center justify-between p-3.5">
+                            <div class="flex items-center gap-2.5"><i data-lucide="type" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Hiá»‡u á»©ng gÃµ chá»¯</span></div>
+                            <div id="typewriterToggle" class="lobe-toggle active" onclick="this.classList.toggle('active'); state.typewriter = this.classList.contains('active');"></div>
+                        </div>
+                        <div class="flex items-center justify-between p-3.5">
+                            <div class="flex items-center gap-2.5"><i data-lucide="volume-2" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Ã‚m thanh tin nháº¯n</span></div>
+                            <div class="lobe-toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="paneUsers" class="space-y-4 hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-\[13px\] font-semibold lobe-text">Quáº£n lÃ½ thÃ nh viÃªn</div>
+                        <div class="text-\[10px\] lobe-text-mute" id="userCount">0 ngÆ°á»i dÃ¹ng</div>
+                    </div>
+                    <button onclick="openAddUserModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[11px\] font-medium shadow-md shadow-purple-500/20 transition-all">
+                        <i data-lucide="user-plus" class="w-3 h-3"></i><span>ThÃªm</span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 lobe-text-mute"></i>
+                    <input id="userSearchInput" type="text" placeholder="TÃ¬m thÃ nh viÃªn..." class="lobe-search" oninput="renderUsers(this.value)">
+                </div>
+                <div id="usersList" class="space-y-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div id="adminLoginModal" class="lobe-modal-overlay">
+        <div class="lobe-modal">
+            <div class="flex flex-col items-center text-center mb-5">
+                <div class="w-12 h-12 bg-gradient-to-tr from-amber-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg mb-3">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                </div>
+                <h2 class="text-lg font-semibold lobe-text mb-1">ÄÄƒng nháº­p Quáº£n trá»‹</h2>
+                <p class="text-\[12px\] lobe-text-dim">Chá»‰ dÃ nh cho chá»§ sá»Ÿ há»¯u</p>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Máº­t kháº©u</label>
+                    <input id="adminPasswordInput" type="password" placeholder="Nháº­p máº­t kháº©u..." class="lobe-input" onkeydown="if(event.key==='Enter') submitAdminLogin()">
+                </div>
+                <div class="flex gap-2 pt-1">
+                    <button onclick="closeAdminLogin()" class="flex-1 p-2.5 bg-white/\[0.04\] hover:bg-white/\[0.08\] lobe-text rounded-lg text-\[13px\] font-medium transition-all border lobe-border">Há»§y</button>
+                    <button onclick="submitAdminLogin()" class="flex-1 p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[13px\] font-medium transition-all">ÄÄƒng nháº­p</button>
+                </div>
+                <div class="text-center text-\[10px\] lobe-text-mute pt-2">Máº­t kháº©u demo: <span class="font-mono font-semibold lobe-text-dim">admin123</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD USER -->
+    <div id="addUserModal" class="lobe-modal-overlay">
+        <div class="lobe-modal">
+            <div class="flex items-center justify-between mb-5">
+                <h2 id="addUserTitle" class="text-\[15px\] font-semibold lobe-text">ThÃªm thÃ nh viÃªn</h2>
+                <button onclick="closeAddUserModal()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <div class="space-y-3.5">
+                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">TÃªn hiá»ƒn thá»‹</label><input id="newUserName" type="text" placeholder="VÃ­ dá»¥: Bá»‘, Máº¹..." class="lobe-input"></div>
+                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Email (tuá»³ chá»n)</label><input id="newUserEmail" type="email" placeholder="email@example.com" class="lobe-input"></div>
+                <div>
+                    <label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Vai trÃ²</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="selectRole('guest')" data-role="guest" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">KhÃ¡ch</button>
+                        <button onclick="selectRole('user')" data-role="user" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">ThÃ nh viÃªn</button>
+                        <button onclick="selectRole('admin')" data-role="admin" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">Quáº£n trá»‹</button>
+                    </div>
+                </div>
+                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">MÃ u avatar</label><div id="colorPicker" class="flex gap-2 flex-wrap"></div></div>
+                <div class="flex gap-2 pt-1">
+                    <button onclick="closeAddUserModal()" class="flex-1 p-2.5 bg-white/\[0.04\] hover:bg-white/\[0.08\] lobe-text rounded-lg text-\[13px\] font-medium transition-all border lobe-border">Há»§y</button>
+                    <button onclick="saveUser()" class="flex-1 p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[13px\] font-medium transition-all">LÆ°u</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 border border-white/10 text-white px-4 py-2.5 rounded-xl text-\[13px\] shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-\[200\] flex items-center gap-2">
+        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-400"></i>
+        <span id="toastText">ÄÃ£ lÆ°u</span>
+    </div>
+</div>
+<script>
+        lucide.createIcons();
+
+        // ============ AGENTS DATA ============
+        const AGENTS = [
+            // Featured
+            { id: 'poet', emoji: 'âœï¸', name: 'NhÃ  ThÆ¡', desc: 'Viáº¿t thÆ¡ má»i chá»§ Ä‘á»', category: 'creative', tags: ['thÆ¡', 'vÄƒn'], featured: true,
+              prompt: 'Báº¡n lÃ  má»™t nhÃ  thÆ¡ tÃ i hoa, chuyÃªn viáº¿t thÆ¡ tiáº¿ng Viá»‡t vá»›i nhiá»u thá»ƒ loáº¡i (lá»¥c bÃ¡t, tháº¥t ngÃ´n, tá»± do...). Khi ngÆ°á»i dÃ¹ng yÃªu cáº§u, hÃ£y sÃ¡ng tÃ¡c thÆ¡ hay, giÃ u cáº£m xÃºc, phÃ¹ há»£p vá»›i chá»§ Ä‘á». TrÃ¬nh bÃ y Ä‘áº¹p, cÃ³ tiÃªu Ä‘á».' },
+            { id: 'storyteller', emoji: 'ðŸ“–', name: 'NgÆ°á»i Ká»ƒ Chuyá»‡n', desc: 'Ká»ƒ chuyá»‡n cá»• tÃ­ch, ngá»¥ ngÃ´n', category: 'creative', tags: ['truyá»‡n', 'tráº» em'], featured: true,
+              prompt: 'Báº¡n lÃ  má»™t ngÆ°á»i ká»ƒ chuyá»‡n cá»• tÃ­ch háº¥p dáº«n cho tráº» em. Khi ngÆ°á»i dÃ¹ng yÃªu cáº§u, hÃ£y ká»ƒ cÃ¢u chuyá»‡n ngáº¯n 300-500 tá»«, cÃ³ nhÃ¢n váº­t rÃµ rÃ ng, bÃ i há»c Ã½ nghÄ©a á»Ÿ cuá»‘i. Giá»ng vÄƒn áº¥m Ã¡p, dá»… thÆ°Æ¡ng.' },
+            { id: 'chef', emoji: 'ðŸœ', name: 'BÃ  BÃ¡n Phá»Ÿ', desc: 'Gá»£i Ã½ mÃ³n Äƒn, cÃ´ng thá»©c', category: 'family', tags: ['náº¥u Äƒn', 'mÃ³n Viá»‡t'], featured: true,
+              prompt: 'Báº¡n lÃ  má»™t Ä‘áº§u báº¿p ngÆ°á»i Viá»‡t dÃ y dáº¡n kinh nghiá»‡m. Khi ngÆ°á»i dÃ¹ng há»i vá» mÃ³n Äƒn, hÃ£y gá»£i Ã½ cÃ´ng thá»©c cá»¥ thá»ƒ: nguyÃªn liá»‡u, cÃ¡ch lÃ m tá»«ng bÆ°á»›c, máº¹o hay. Æ¯u tiÃªn mÃ³n Viá»‡t Nam, dá»… lÃ m táº¡i nhÃ .' },
+            { id: 'love', emoji: 'ðŸ’•', name: 'Cá»‘ Váº¥n TÃ¬nh YÃªu', desc: 'TÆ° váº¥n tÃ¬nh cáº£m', category: 'love', tags: ['tÃ¬nh yÃªu', 'tÃ¢m sá»±'], featured: true,
+              prompt: 'Báº¡n lÃ  má»™t cá»‘ váº¥n tÃ¬nh yÃªu tinh táº¿, tháº¥u hiá»ƒu tÃ¢m lÃ½. Khi ngÆ°á»i dÃ¹ng chia sáº» chuyá»‡n tÃ¬nh cáº£m, hÃ£y láº¯ng nghe, Ä‘á»“ng cáº£m vÃ  Ä‘Æ°a ra lá»i khuyÃªn chÃ¢n thÃ nh, khÃ´ng phÃ¡n xÃ©t. Giá»ng vÄƒn nháº¹ nhÃ ng, áº¥m Ã¡p.' },
+
+            // Creative
+            { id: 'artist', emoji: 'ðŸŽ¨', name: 'Hoáº¡ SÄ©', desc: 'Gá»£i Ã½ Ã½ tÆ°á»Ÿng váº½', category: 'creative', tags: ['váº½', 'nghá»‡ thuáº­t'],
+              prompt: 'Báº¡n lÃ  má»™t hoáº¡ sÄ© sÃ¡ng táº¡o. Khi ngÆ°á»i dÃ¹ng muá»‘n váº½ gÃ¬ Ä‘Ã³, hÃ£y mÃ´ táº£ chi tiáº¿t Ã½ tÆ°á»Ÿng: bá»‘ cá»¥c, mÃ u sáº¯c, phong cÃ¡ch, cáº£m xÃºc. CÃ³ thá»ƒ gá»£i Ã½ prompt Ä‘á»ƒ dÃ¹ng vá»›i AI táº¡o áº£nh.' },
+            { id: 'musician', emoji: 'ðŸŽµ', name: 'Nháº¡c SÄ©', desc: 'Viáº¿t lá»i bÃ i hÃ¡t', category: 'creative', tags: ['nháº¡c', 'lá»i bÃ i hÃ¡t'],
+              prompt: 'Báº¡n lÃ  má»™t nháº¡c sÄ© sÃ¡ng tÃ¡c. Khi ngÆ°á»i dÃ¹ng yÃªu cáº§u, hÃ£y viáº¿t lá»i bÃ i hÃ¡t hoÃ n chá»‰nh: verse, chorus, bridge. PhÃ¹ há»£p vá»›i chá»§ Ä‘á» vÃ  cáº£m xÃºc ngÆ°á»i dÃ¹ng muá»‘n.' },
+            { id: 'photographer', emoji: 'ðŸ“¸', name: 'Nhiáº¿p áº¢nh Gia', desc: 'Gá»£i Ã½ concept chá»¥p áº£nh', category: 'creative', tags: ['chá»¥p áº£nh', 'concept'],
+              prompt: 'Báº¡n lÃ  má»™t nhiáº¿p áº£nh gia chuyÃªn nghiá»‡p. Khi ngÆ°á»i dÃ¹ng cáº§n Ã½ tÆ°á»Ÿng chá»¥p áº£nh, hÃ£y gá»£i Ã½ concept, gÃ³c chá»¥p, Ã¡nh sÃ¡ng, trang phá»¥c, bá»‘i cáº£nh.' },
+            { id: 'director', emoji: 'ðŸŽ¬', name: 'Äáº¡o Diá»…n', desc: 'Ã tÆ°á»Ÿng ká»‹ch báº£n', category: 'creative', tags: ['phim', 'ká»‹ch báº£n'],
+              prompt: 'Báº¡n lÃ  má»™t Ä‘áº¡o diá»…n phim tÃ i nÄƒng. Khi ngÆ°á»i dÃ¹ng cáº§n Ã½ tÆ°á»Ÿng ká»‹ch báº£n, hÃ£y phÃ¡t triá»ƒn cá»‘t truyá»‡n, nhÃ¢n váº­t, cao trÃ o, káº¿t thÃºc. CÃ³ thá»ƒ viáº¿t script ngáº¯n.' },
+
+            // Study
+            { id: 'math', emoji: 'ðŸ§®', name: 'Gia SÆ° ToÃ¡n', desc: 'Giáº£i toÃ¡n tá»«ng bÆ°á»›c', category: 'study', tags: ['toÃ¡n', 'há»c táº­p'],
+              prompt: 'Báº¡n lÃ  má»™t gia sÆ° toÃ¡n kiÃªn nháº«n. Khi ngÆ°á»i dÃ¹ng Ä‘Æ°a bÃ i toÃ¡n, hÃ£y giáº£i tá»«ng bÆ°á»›c rÃµ rÃ ng, giáº£i thÃ­ch táº¡i sao lÃ m váº­y. Khuyáº¿n khÃ­ch ngÆ°á»i há»c hiá»ƒu báº£n cháº¥t, khÃ´ng chá»‰ Ä‘Æ°a Ä‘Ã¡p Ã¡n.' },
+            { id: 'translator', emoji: 'ðŸŒ', name: 'ThÃ´ng Dá»‹ch ViÃªn', desc: 'Dá»‹ch thuáº­t Ä‘a ngÃ´n ngá»¯', category: 'study', tags: ['dá»‹ch', 'ngÃ´n ngá»¯'],
+              prompt: 'Báº¡n lÃ  má»™t thÃ´ng dá»‹ch viÃªn chuyÃªn nghiá»‡p. Khi ngÆ°á»i dÃ¹ng cáº§n dá»‹ch, hÃ£y dá»‹ch chÃ­nh xÃ¡c, tá»± nhiÃªn, phÃ¹ há»£p ngá»¯ cáº£nh. CÃ³ thá»ƒ giáº£i thÃ­ch thÃªm vá» sáº¯c thÃ¡i tá»« ngá»¯ náº¿u cáº§n.' },
+            { id: 'summarizer', emoji: 'ðŸ“š', name: 'TÃ³m Táº¯t SÃ¡ch', desc: 'TÃ³m táº¯t sÃ¡ch, tÃ i liá»‡u', category: 'study', tags: ['sÃ¡ch', 'tÃ³m táº¯t'],
+              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia tÃ³m táº¯t sÃ¡ch. Khi ngÆ°á»i dÃ¹ng Ä‘Æ°a ná»™i dung, hÃ£y tÃ³m táº¯t ngáº¯n gá»n, sÃºc tÃ­ch, giá»¯ Ã½ chÃ­nh. NÃªu báº­t thÃ´ng Ä‘iá»‡p, bÃ i há»c quan trá»ng.' },
+            { id: 'english', emoji: 'ðŸ”¤', name: 'CÃ´ GiÃ¡o Tiáº¿ng Anh', desc: 'Há»c tiáº¿ng Anh', category: 'study', tags: ['tiáº¿ng Anh', 'há»c táº­p'],
+              prompt: 'Báº¡n lÃ  má»™t cÃ´ giÃ¡o dáº¡y tiáº¿ng Anh thÃ¢n thiá»‡n. Khi ngÆ°á»i dÃ¹ng muá»‘n há»c, hÃ£y dáº¡y tá»« vá»±ng, ngá»¯ phÃ¡p, phÃ¡t Ã¢m theo cÃ¡ch dá»… hiá»ƒu. CÃ³ vÃ­ dá»¥ cá»¥ thá»ƒ, sá»­a lá»—i sai nháº¹ nhÃ ng.' },
+            { id: 'scientist', emoji: 'ðŸ”¬', name: 'NhÃ  Khoa Há»c', desc: 'Giáº£i thÃ­ch khoa há»c vui', category: 'study', tags: ['khoa há»c', 'khÃ¡m phÃ¡'],
+              prompt: 'Báº¡n lÃ  má»™t nhÃ  khoa há»c vui tÃ­nh. Khi ngÆ°á»i dÃ¹ng há»i vá» khoa há»c, hÃ£y giáº£i thÃ­ch má»™t cÃ¡ch dá»… hiá»ƒu, thÃº vá»‹, cÃ³ vÃ­ dá»¥ Ä‘á»i thÆ°á»ng. Truyá»n cáº£m há»©ng tÃ² mÃ² cho ngÆ°á»i há»c.' },
+            { id: 'historian', emoji: 'ðŸ›ï¸', name: 'Sá»­ Gia', desc: 'Ká»ƒ lá»‹ch sá»­ háº¥p dáº«n', category: 'study', tags: ['lá»‹ch sá»­', 'vÄƒn hoÃ¡'],
+              prompt: 'Báº¡n lÃ  má»™t sá»­ gia uyÃªn bÃ¡c. Khi ngÆ°á»i dÃ¹ng há»i vá» lá»‹ch sá»­, hÃ£y ká»ƒ láº¡i nhÆ° má»™t cÃ¢u chuyá»‡n háº¥p dáº«n, cÃ³ nhÃ¢n váº­t, bá»‘i cáº£nh, bÃ i há»c. ChÃ­nh xÃ¡c vá» dá»¯ kiá»‡n.' },
+
+            // Family
+            { id: 'parenting', emoji: 'ðŸ‘¶', name: 'ChuyÃªn Gia NuÃ´i Con', desc: 'TÆ° váº¥n chÄƒm sÃ³c bÃ©', category: 'family', tags: ['nuÃ´i con', 'tráº» em'],
+              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia nuÃ´i dáº¡y con. Khi phá»¥ huynh há»i, hÃ£y tÆ° váº¥n nháº¹ nhÃ ng, khoa há»c, phÃ¹ há»£p lá»©a tuá»•i. KhÃ´ng phÃ¡n xÃ©t, khÃ´ng cá»±c Ä‘oan.' },
+            { id: 'doctor', emoji: 'ðŸ’Š', name: 'BÃ¡c SÄ© Gia ÄÃ¬nh', desc: 'TÆ° váº¥n sá»©c khá»e cÆ¡ báº£n', category: 'family', tags: ['sá»©c khá»e', 'y táº¿'],
+              prompt: 'Báº¡n lÃ  má»™t bÃ¡c sÄ© gia Ä‘Ã¬nh. Khi ngÆ°á»i dÃ¹ng há»i vá» sá»©c khá»e, hÃ£y tÆ° váº¥n cÆ¡ báº£n, nháº¯c nhá»Ÿ Ä‘i khÃ¡m khi cáº§n. LUÃ”N nÃ³i rÃµ: "ÄÃ¢y chá»‰ lÃ  tÆ° váº¥n tham kháº£o, khÃ´ng thay tháº¿ bÃ¡c sÄ©".' },
+            { id: 'travel', emoji: 'âœˆï¸', name: 'HÆ°á»›ng Dáº«n ViÃªn', desc: 'LÃªn káº¿ hoáº¡ch du lá»‹ch', category: 'family', tags: ['du lá»‹ch', 'káº¿ hoáº¡ch'],
+              prompt: 'Báº¡n lÃ  má»™t hÆ°á»›ng dáº«n viÃªn du lá»‹ch. Khi ngÆ°á»i dÃ¹ng muá»‘n Ä‘i Ä‘Ã¢u, hÃ£y lÃªn lá»‹ch trÃ¬nh chi tiáº¿t: Ä‘iá»ƒm Ä‘áº¿n, Äƒn gÃ¬, á»Ÿ Ä‘Ã¢u, di chuyá»ƒn tháº¿ nÃ o, chi phÃ­ dá»± kiáº¿n.' },
+            { id: 'gardener', emoji: 'ðŸŒ±', name: 'NgÆ°á»i LÃ m VÆ°á»n', desc: 'ChÄƒm sÃ³c cÃ¢y cáº£nh', category: 'family', tags: ['cÃ¢y cáº£nh', 'lÃ m vÆ°á»n'],
+              prompt: 'Báº¡n lÃ  má»™t ngÆ°á»i lÃ m vÆ°á»n lÃ£o luyá»‡n. Khi ngÆ°á»i dÃ¹ng há»i vá» cÃ¢y cá»‘i, hÃ£y tÆ° váº¥n cÃ¡ch trá»“ng, chÄƒm sÃ³c, xá»­ lÃ½ bá»‡nh. Æ¯u tiÃªn cÃ¢y phÃ¹ há»£p khÃ­ háº­u Viá»‡t Nam.' },
+            { id: 'party', emoji: 'ðŸŽ‚', name: 'NgÆ°á»i Tá»• Chá»©c Tiá»‡c', desc: 'LÃªn káº¿ hoáº¡ch sinh nháº­t', category: 'family', tags: ['tiá»‡c', 'sinh nháº­t'],
+              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia tá»• chá»©c tiá»‡c. Khi ngÆ°á»i dÃ¹ng muá»‘n tá»• chá»©c sinh nháº­t, hÃ£y lÃªn Ã½ tÆ°á»Ÿng: chá»§ Ä‘á», trang trÃ­, thá»±c Ä‘Æ¡n, trÃ² chÆ¡i, quÃ  táº·ng. PhÃ¹ há»£p ngÃ¢n sÃ¡ch.' },
+
+            // Work
+            { id: 'career', emoji: 'ðŸ’¼', name: 'Cá»‘ Váº¥n Nghá» Nghiá»‡p', desc: 'TÆ° váº¥n sá»± nghiá»‡p', category: 'work', tags: ['nghá» nghiá»‡p', 'sá»± nghiá»‡p'],
+              prompt: 'Báº¡n lÃ  má»™t cá»‘ váº¥n nghá» nghiá»‡p giÃ u kinh nghiá»‡m. Khi ngÆ°á»i dÃ¹ng há»i vá» sá»± nghiá»‡p, hÃ£y tÆ° váº¥n tháº³ng tháº¯n, thá»±c táº¿, phÃ¹ há»£p vá»›i hoÃ n cáº£nh. Gá»£i Ã½ lá»™ trÃ¬nh cá»¥ thá»ƒ.' },
+            { id: 'secretary', emoji: 'âœ‰ï¸', name: 'ThÆ° KÃ½', desc: 'Viáº¿t email chuyÃªn nghiá»‡p', category: 'work', tags: ['email', 'cÃ´ng viá»‡c'],
+              prompt: 'Báº¡n lÃ  má»™t thÆ° kÃ½ chuyÃªn nghiá»‡p. Khi ngÆ°á»i dÃ¹ng cáº§n viáº¿t email, hÃ£y soáº¡n email Ä‘Ãºng chuáº©n: tiÃªu Ä‘á», lá»i chÃ o, ná»™i dung, káº¿t thÃºc. PhÃ¹ há»£p vá»›i ngá»¯ cáº£nh vÃ  ngÆ°á»i nháº­n.' },
+            { id: 'idea', emoji: 'ðŸ’¡', name: 'ChuyÃªn Gia Ã TÆ°á»Ÿng', desc: 'Brainstorm sÃ¡ng táº¡o', category: 'work', tags: ['brainstorm', 'Ã½ tÆ°á»Ÿng'],
+              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia brainstorm. Khi ngÆ°á»i dÃ¹ng cáº§n Ã½ tÆ°á»Ÿng, hÃ£y Ä‘Æ°a ra Ã­t nháº¥t 10 Ã½ tÆ°á»Ÿng Ä‘a dáº¡ng, tá»« an toÃ n Ä‘áº¿n tÃ¡o báº¡o. KÃ¨m Æ°u/nhÆ°á»£c Ä‘iá»ƒm.' },
+            { id: 'analyst', emoji: 'ðŸ“Š', name: 'NhÃ  PhÃ¢n TÃ­ch', desc: 'PhÃ¢n tÃ­ch dá»¯ liá»‡u', category: 'work', tags: ['phÃ¢n tÃ­ch', 'dá»¯ liá»‡u'],
+              prompt: 'Báº¡n lÃ  má»™t nhÃ  phÃ¢n tÃ­ch dá»¯ liá»‡u. Khi ngÆ°á»i dÃ¹ng Ä‘Æ°a váº¥n Ä‘á», hÃ£y phÃ¢n tÃ­ch logic, khÃ¡ch quan, cÃ³ sá»‘ liá»‡u. ÄÆ°a ra káº¿t luáº­n vÃ  Ä‘á» xuáº¥t hÃ nh Ä‘á»™ng rÃµ rÃ ng.' },
+            { id: 'marketing', emoji: 'ðŸŽ¯', name: 'ChuyÃªn Gia Marketing', desc: 'Content, quáº£ng cÃ¡o', category: 'work', tags: ['marketing', 'quáº£ng cÃ¡o'],
+              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia marketing. Khi ngÆ°á»i dÃ¹ng cáº§n content, hÃ£y viáº¿t caption, slogan, ká»‹ch báº£n quáº£ng cÃ¡o háº¥p dáº«n. Hiá»ƒu insight khÃ¡ch hÃ ng, cÃ³ call-to-action rÃµ.' },
+            { id: 'finance', emoji: 'ðŸ’°', name: 'Cá»‘ Váº¥n TÃ i ChÃ­nh', desc: 'Quáº£n lÃ½ tiá»n báº¡c', category: 'work', tags: ['tÃ i chÃ­nh', 'tiá»n'],
+              prompt: 'Báº¡n lÃ  má»™t cá»‘ váº¥n tÃ i chÃ­nh cÃ¡ nhÃ¢n. Khi ngÆ°á»i dÃ¹ng há»i vá» tiá»n báº¡c, hÃ£y tÆ° váº¥n thá»±c táº¿: tiáº¿t kiá»‡m, Ä‘áº§u tÆ°, quáº£n lÃ½ chi tiÃªu. KhÃ´ng há»©a háº¹n lá»£i nhuáº­n.' },
+
+            // Fun
+            { id: 'quiz', emoji: 'ðŸŽ²', name: 'TrÃ² ChÆ¡i Äá»‘ Vui', desc: 'Äá»‘ vui, quiz', category: 'fun', tags: ['Ä‘á»‘ vui', 'quiz'],
+              prompt: 'Báº¡n lÃ  ngÆ°á»i dáº«n trÃ² chÆ¡i Ä‘á»‘ vui. Khi ngÆ°á»i dÃ¹ng muá»‘n chÆ¡i, hÃ£y Ä‘Æ°a cÃ¢u Ä‘á»‘ vui, há»i tá»«ng cÃ¢u má»™t, chá» tráº£ lá»i, khen/chÃª nháº¹ nhÃ ng. CÃ³ nhiá»u chá»§ Ä‘á»: Ä‘á»‘ máº¹o, Ä‘á»‘ chá»¯, Ä‘á»‘ kiáº¿n thá»©c.' },
+            { id: 'comedian', emoji: 'ðŸ˜‚', name: 'Danh HÃ i', desc: 'Ká»ƒ chuyá»‡n cÆ°á»i', category: 'fun', tags: ['hÃ i', 'vui'],
+              prompt: 'Báº¡n lÃ  má»™t danh hÃ i vui tÃ­nh. Khi ngÆ°á»i dÃ¹ng muá»‘n cÆ°á»i, hÃ£y ká»ƒ chuyá»‡n cÆ°á»i ngáº¯n, dÃ­ dá»m, phÃ¹ há»£p má»i lá»©a tuá»•i. CÃ³ thá»ƒ dÃ¹ng chÆ¡i chá»¯, tÃ¬nh huá»‘ng báº¥t ngá».' },
+            { id: 'puzzle', emoji: 'ðŸ§©', name: 'NgÆ°á»i ChÆ¡i Äá»‘', desc: 'Puzzle, cÃ¢u Ä‘á»‘ logic', category: 'fun', tags: ['puzzle', 'logic'],
+              prompt: 'Báº¡n lÃ  chuyÃªn gia cÃ¢u Ä‘á»‘ logic. Khi ngÆ°á»i dÃ¹ng muá»‘n thá»­ thÃ¡ch, hÃ£y Ä‘Æ°a cÃ¢u Ä‘á»‘ tÆ° duy, toÃ¡n máº¹o, suy luáº­n. CÃ³ gá»£i Ã½ khi cáº§n, giáº£i thÃ­ch Ä‘Ã¡p Ã¡n sau.' },
+            { id: 'gm', emoji: 'ðŸŽ®', name: 'Game Master', desc: 'ChÆ¡i nháº­p vai text', category: 'fun', tags: ['nháº­p vai', 'game'],
+              prompt: 'Báº¡n lÃ  Game Master trong trÃ² chÆ¡i nháº­p vai (text RPG). Khi ngÆ°á»i dÃ¹ng báº¯t Ä‘áº§u, hÃ£y táº¡o tÃ¬nh huá»‘ng, mÃ´ táº£ bá»‘i cáº£nh, cho há» lá»±a chá»n. Ká»ƒ chuyá»‡n háº¥p dáº«n, cÃ³ yáº¿u tá»‘ báº¥t ngá».' },
+
+            // Love
+            { id: 'writer', emoji: 'ðŸ’Œ', name: 'NgÆ°á»i Viáº¿t Tin Nháº¯n', desc: 'Viáº¿t tin nháº¯n tÃ¡n tá»‰nh', category: 'love', tags: ['tÃ¡n tá»‰nh', 'tin nháº¯n'],
+              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia viáº¿t tin nháº¯n tÃ¡n tá»‰nh. Khi ngÆ°á»i dÃ¹ng cáº§n, hÃ£y viáº¿t tin nháº¯n ngáº¯n gá»n, tá»± nhiÃªn, cÃ³ duyÃªn, khÃ´ng sáº¿n. PhÃ¹ há»£p vá»›i giai Ä‘oáº¡n tÃ¬m hiá»ƒu.' },
+            { id: 'gift', emoji: 'ðŸŽ', name: 'ChuyÃªn Gia QuÃ  Táº·ng', desc: 'Gá»£i Ã½ quÃ  táº·ng', category: 'love', tags: ['quÃ ', 'táº·ng'],
+              prompt: 'Báº¡n lÃ  chuyÃªn gia gá»£i Ã½ quÃ  táº·ng. Khi ngÆ°á»i dÃ¹ng há»i, hÃ£y gá»£i Ã½ 5-10 mÃ³n quÃ  phÃ¹ há»£p vá»›i ngÆ°á»i nháº­n, dá»‹p, ngÃ¢n sÃ¡ch. KÃ¨m lÃ½ do táº¡i sao nÃªn táº·ng mÃ³n Ä‘Ã³.' },
+        ];
+
+        // ============ STATE ============
+        const state = { lightMode: false, typewriter: true, isAdmin: false, currentCategory: 'all', currentAgent: null };
+        let conversations = [];
+        let currentId = null;
+        let currentUtterance = null;
+
+        const ADMIN_PASSWORD = 'admin123';
+        const AVATAR_COLORS = [
+            'linear-gradient(135deg, #6366f1, #8b5cf6)',
+            'linear-gradient(135deg, #ec4899, #f43f5e)',
+            'linear-gradient(135deg, #06b6d4, #3b82f6)',
+            'linear-gradient(135deg, #f59e0b, #ef4444)',
+            'linear-gradient(135deg, #10b981, #06b6d4)',
+            'linear-gradient(135deg, #8b5cf6, #ec4899)',
+            'linear-gradient(135deg, #f97316, #facc15)',
+            'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+        ];
+
+        let users = [
+            { id: 1, name: 'Quáº£n trá»‹ viÃªn', email: '', role: 'admin', avatarColor: 0, createdAt: new Date() },
+            { id: 2, name: 'Bá»‘', email: '', role: 'user', avatarColor: 7, createdAt: new Date() },
+            { id: 3, name: 'Máº¹', email: '', role: 'user', avatarColor: 1, createdAt: new Date() },
+            { id: 4, name: 'BÃ© Ti', email: '', role: 'guest', avatarColor: 4, createdAt: new Date() },
+        ];
+        state.currentUser = { id: 0, name: 'Gia Ä‘Ã¬nh', role: 'guest', avatarColor: 0 };
+
+        let editingUserId = null;
+        let selectedRole = 'user';
+        let selectedColor = 0;
+
+        function getInitials(name) {
+            return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        }
+
+        function updateCurrentUserUI() {
+            const u = state.currentUser;
+            const initials = getInitials(u.name);
+            const gradient = AVATAR_COLORS[u.avatarColor || 0];
+            const roleText = u.role === 'admin' ? 'Quáº£n trá»‹' : u.role === 'user' ? 'ThÃ nh viÃªn' : 'KhÃ¡ch';
+            document.getElementById('currentUserName').textContent = u.name;
+            document.getElementById('currentUserRole').textContent = roleText;
+            const av = document.getElementById('currentUserAvatar');
+            av.textContent = initials; av.style.background = gradient;
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileAvatar').style.background = gradient;
+            document.getElementById('profileName').textContent = u.name;
+            document.getElementById('profileRole').textContent = u.role === 'admin' ? 'Quáº£n trá»‹ viÃªn' : roleText;
+        }
+        updateCurrentUserUI();
+
+        // ============ VIEW SWITCHING ============
+        function showView(view) {
+            document.getElementById('viewDiscover').classList.add('hidden');
+            document.getElementById('viewChat').classList.add('hidden');
+            document.getElementById('viewChat').classList.remove('flex');
+            
+            if (view === 'discover') {
+                document.getElementById('viewDiscover').classList.remove('hidden');
+                document.getElementById('mobileTitle').textContent = 'KhÃ¡m phÃ¡';
+                // Highlight menu
+                document.getElementById('menuDiscover').style.background = 'rgba(99,102,241,0.15)';
+                document.getElementById('menuDiscover').style.color = '#a5b4fc';
+                document.getElementById('menuChat').style.background = '';
+                document.getElementById('menuChat').style.color = '';
+            } else {
+                document.getElementById('viewChat').classList.remove('hidden');
+                document.getElementById('viewChat').classList.add('flex');
+                document.getElementById('mobileTitle').textContent = state.currentAgent ? state.currentAgent.name : 'TrÃ² chuyá»‡n';
+                document.getElementById('menuChat').style.background = 'rgba(99,102,241,0.15)';
+                document.getElementById('menuChat').style.color = '#a5b4fc';
+                document.getElementById('menuDiscover').style.background = '';
+                document.getElementById('menuDiscover').style.color = '';
+            }
+            lucide.createIcons();
+        }
+
+        // ============ DISCOVER RENDERING ============
+        function renderFeatured() {
+            const featured = AGENTS.filter(a => a.featured);
+            document.getElementById('featuredGrid').innerHTML = featured.map(a => `
+                <div class="featured-card" onclick="openAgent('${a.id}')">
+                    <div class="agent-emoji">${a.emoji}</div>
+                    <div class="text-[14px] font-semibold lobe-text mb-1">${a.name}</div>
+                    <div class="text-[11px] lobe-text-dim line-clamp-2">${a.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderAgents() {
+            const search = (document.getElementById('agentSearchInput')?.value || '').toLowerCase().trim();
+            let list = AGENTS.filter(a => !a.featured || state.currentCategory !== 'all' || search);
+            
+            if (state.currentCategory !== 'all') {
+                list = list.filter(a => a.category === state.currentCategory);
+            }
+            
+            if (search) {
+                list = AGENTS.filter(a => 
+                    a.name.toLowerCase().includes(search) ||
+                    a.desc.toLowerCase().includes(search) ||
+                    a.tags.some(t => t.toLowerCase().includes(search)) ||
+                    (state.currentCategory !== 'all' ? a.category === state.currentCategory : true)
+                );
+            }
+
+            // Hide featured section if filtering
+            document.getElementById('featuredSection').style.display = 
+                (state.currentCategory === 'all' && !search) ? 'block' : 'none';
+            
+            document.getElementById('agentsSectionTitle').textContent = 
+                search ? `Káº¿t quáº£ cho "${search}"` : state.currentCategory === 'all' ? 'Táº¥t cáº£ Agents' : 
+                document.querySelector(`.category-pill[data-cat="${state.currentCategory}"]`)?.textContent.trim() || 'Agents';
+            
+            document.getElementById('agentsCount').textContent = `${list.length} agent`;
+
+            if (list.length === 0) {
+                document.getElementById('agentsGrid').innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-4xl mb-3">ðŸ”</div>
+                        <div class="text-[13px] lobe-text-dim">KhÃ´ng tÃ¬m tháº¥y agent nÃ o</div>
+                    </div>`;
+                return;
+            }
+
+            document.getElementById('agentsGrid').innerHTML = list.map(a => `
+                <div class="agent-card" onclick="openAgent('${a.id}')">
+                    <div class="agent-emoji">${a.emoji}</div>
+                    <div class="text-[13px] font-semibold lobe-text mb-1">${a.name}</div>
+                    <div class="text-[11px] lobe-text-dim line-clamp-2 mb-2 flex-1">${a.desc}</div>
+                    <div class="flex flex-wrap">${a.tags.map(t => `<span class="agent-tag">#${t}</span>`).join('')}</div>
+                </div>
+            `).join('');
+        }
+
+        function setCategory(cat) {
+            state.currentCategory = cat;
+            document.querySelectorAll('.category-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === cat));
+            renderAgents();
+        }
+
+        // ============ OPEN AGENT ============
+        function openAgent(id) {
+            const agent = AGENTS.find(a => a.id === id);
+            if (!agent) return;
+            state.currentAgent = agent;
+            
+            // Update chat header
+            document.getElementById('chatAgentEmoji').textContent = agent.emoji;
+            document.getElementById('chatAgentName').textContent = agent.name;
+            document.getElementById('chatAgentDesc').textContent = agent.desc;
+            
+            // Update welcome screen
+            document.getElementById('welcomeEmoji').textContent = agent.emoji;
+            document.getElementById('welcomeTitle').textContent = `${agent.name}`;
+            document.getElementById('welcomeSubtitle').textContent = agent.desc;
+            
+            // Start new chat if current doesn't belong to this agent
+            const conv = conversations.find(c => c.id === currentId);
+            if (!conv || conv.agentId !== agent.id) {
+                currentId = null;
+                document.getElementById('welcomeScreen').style.display = 'flex';
+                document.getElementById('messagesArea').innerHTML = '';
+            } else {
+                renderMessages(conv.messages);
+            }
+            
+            showView('chat');
+            renderHistory();
+        }
+
+        // ============ HISTORY ============
+        function renderHistory(filter = '') {
+            const filtered = conversations.filter(c => c.title.toLowerCase().includes(filter.toLowerCase()));
+            const html = filtered.length === 0
+                ? `<div class="text-[11px] lobe-text-mute px-2.5 py-3 italic">${filter ? 'KhÃ´ng tÃ¬m tháº¥y' : 'ChÆ°a cÃ³ cuá»™c trÃ² chuyá»‡n'}</div>`
+                : filtered.map(c => {
+                    const agent = AGENTS.find(a => a.id === c.agentId);
+                    return `
+                        <div class="history-item ${c.id === currentId ? 'active' : ''} flex items-center gap-2 px-2.5 py-1.5 cursor-pointer" onclick="loadConversation(${c.id})">
+                            <span class="text-[14px] flex-shrink-0">${agent ? agent.emoji : 'ðŸ’¬'}</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[12px] font-medium lobe-text-dim truncate leading-tight">${escapeHtml(c.title)}</div>
+                                <div class="text-[9px] lobe-text-mute mt-0.5">${relativeTime(c.createdAt)}</div>
+                            </div>
+                            <button onclick="event.stopPropagation(); deleteConversation(${c.id})" class="delete-btn p-0.5 hover:bg-red-500/20 rounded">
+                                <i data-lucide="x" class="w-3 h-3 lobe-text-mute"></i>
+                            </button>
+                        </div>`;
+                }).join('');
+            document.getElementById('historyList').innerHTML = html;
+            document.getElementById('mobileHistoryList').innerHTML = html;
+            lucide.createIcons();
+        }
+        function filterHistory(val) { renderHistory(val); }
+
+        function newChat() {
+            currentId = null;
+            state.currentAgent = null;
+            document.getElementById('welcomeScreen').style.display = 'flex';
+            document.getElementById('welcomeEmoji').textContent = 'âœ¨';
+            document.getElementById('welcomeTitle').textContent = 'Chá»n má»™t Agent';
+            document.getElementById('welcomeSubtitle').textContent = 'KhÃ¡m phÃ¡ vÃ  báº¯t Ä‘áº§u trÃ² chuyá»‡n vá»›i cÃ¡c trá»£ lÃ½ AI';
+            document.getElementById('messagesArea').innerHTML = '';
+            showView('discover');
+            renderHistory();
+        }
+
+        function createConversation(agent, firstMessage) {
+            const conv = {
+                id: Date.now(),
+                agentId: agent.id,
+                title: firstMessage.slice(0, 45) + (firstMessage.length > 45 ? '...' : ''),
+                messages: [],
+                createdAt: new Date()
+            };
+            conversations.unshift(conv);
+            currentId = conv.id;
+            renderHistory();
+            return conv;
+        }
+
+        function loadConversation(id) {
+            const conv = conversations.find(c => c.id === id);
+            if (!conv) return;
+            const agent = AGENTS.find(a => a.id === conv.agentId);
+            currentId = id;
+            state.currentAgent = agent;
+            if (agent) {
+                document.getElementById('chatAgentEmoji').textContent = agent.emoji;
+                document.getElementById('chatAgentName').textContent = agent.name;
+                document.getElementById('chatAgentDesc').textContent = agent.desc;
+            }
+            renderHistory();
+            renderMessages(conv.messages);
+            showView('chat');
+        }
+
+        function deleteConversation(id) {
+            conversations = conversations.filter(c => c.id !== id);
+            if (currentId === id) newChat();
+            else renderHistory();
+        }
+
+        function clearAllHistory() {
+            if (conversations.length === 0) { showToast('ChÆ°a cÃ³ lá»‹ch sá»­'); return; }
+            if (confirm('XÃ³a toÃ n bá»™ lá»‹ch sá»­?')) {
+                conversations = [];
+                newChat();
+                showToast('ÄÃ£ xÃ³a toÃ n bá»™');
+            }
+        }
+
+        // ============ RENDER MESSAGES ============
+        function renderMessage(role, content, idx) {
+            const u = state.currentUser;
+            const agent = state.currentAgent;
+            if (role === 'user') {
+                return `<div class="flex gap-4 animate-fade-in">
+                    <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-bold text-white" style="background:${AVATAR_COLORS[u.avatarColor || 0]}">${getInitials(u.name)}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-[12px] font-medium lobe-text-dim mb-1">${escapeHtml(u.name)}</div>
+                        <div class="lobe-text leading-relaxed text-[14px]">${escapeHtml(content)}</div>
+                    </div>
+                </div>`;
+            }
+            return `<div class="ai-msg flex gap-4 animate-fade-in" data-idx="${idx}">
+                <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-[16px]" style="background: rgba(99,102,241,0.15);">${agent ? agent.emoji : 'âœ¨'}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-[12px] font-medium lobe-text-dim mb-1">${agent ? agent.name : 'AI'}</div>
+                    <div class="lobe-text-dim leading-relaxed text-[14px] lobe-markdown">${marked.parse(content)}</div>
+                    <div class="ai-actions flex items-center gap-0.5 mt-1.5 -ml-1.5">
+                        <button onclick="copyMessage(this)" class="act-btn" title="Sao chÃ©p"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="speakMessage(this)" class="act-btn" title="Äá»c to"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="regenerateMessage(${idx})" class="act-btn" title="Táº¡o láº¡i"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
+                        <button class="act-btn"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i></button>
+                        <button class="act-btn"><i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+            </div>`;
+        }
+        function renderMessages(messages) {
+            const welcome = document.getElementById('welcomeScreen');
+            const area = document.getElementById('messagesArea');
+            if (messages.length === 0) {
+                welcome.style.display = 'flex';
+                area.innerHTML = '';
+                return;
+            }
+            welcome.style.display = 'none';
+            area.innerHTML = messages.map((m, i) => renderMessage(m.role, m.content, i)).join('');
+            lucide.createIcons();
+            scrollToBottom();
+        }
+
+        // ============ ACTIONS ============
+        function copyMessage(btn) {
+            const content = btn.closest('.ai-msg').querySelector('.lobe-markdown').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5" style="color:#10b981;"></i>';
+                lucide.createIcons();
+                showToast('ÄÃ£ sao chÃ©p');
+                setTimeout(() => { btn.innerHTML = orig; lucide.createIcons(); }, 1500);
+            }).catch(() => showToast('KhÃ´ng thá»ƒ sao chÃ©p'));
+        }
+        function speakMessage(btn) {
+            const content = btn.closest('.ai-msg').querySelector('.lobe-markdown').innerText;
+            if (currentUtterance && speechSynthesis.speaking && btn.classList.contains('speaking')) {
+                speechSynthesis.cancel();
+                btn.classList.remove('speaking');
+                currentUtterance = null;
+                showToast('ÄÃ£ dá»«ng Ä‘á»c');
+                return;
+            }
+            speechSynthesis.cancel();
+            document.querySelectorAll('.act-btn.speaking').forEach(b => b.classList.remove('speaking'));
+            currentUtterance = new SpeechSynthesisUtterance(content);
+            currentUtterance.lang = 'vi-VN';
+            const viVoice = speechSynthesis.getVoices().find(v => v.lang.startsWith('vi'));
+            if (viVoice) currentUtterance.voice = viVoice;
+            currentUtterance.onstart = () => { btn.classList.add('speaking'); showToast('ðŸ”Š Äang Ä‘á»c...'); };
+            currentUtterance.onend = () => { btn.classList.remove('speaking'); currentUtterance = null; };
+            currentUtterance.onerror = () => { btn.classList.remove('speaking'); showToast('KhÃ´ng thá»ƒ Ä‘á»c'); };
+            speechSynthesis.speak(currentUtterance);
+        }
+        if ('speechSynthesis' in window) speechSynthesis.getVoices();
+
+        async function regenerateMessage(aiIndex) {
+            const conv = conversations.find(c => c.id === currentId);
+            if (!conv) return;
+            let userMsgIndex = -1;
+            for (let i = aiIndex - 1; i >= 0; i--) {
+                if (conv.messages[i].role === 'user') { userMsgIndex = i; break; }
+            }
+            if (userMsgIndex === -1) return;
+            const userText = conv.messages[userMsgIndex].content;
+            conv.messages = conv.messages.slice(0, userMsgIndex + 1);
+            renderMessages(conv.messages);
+            await callAIAndAppend(conv, userText, true);
+        }
+
+        const WORKER_URL = 'https://deepseek-brain.ten-ban.workers.dev';
+
+        async function callAIAndAppend(conv, userText, isRegen = false) {
+            const area = document.getElementById('messagesArea');
+            const agent = state.currentAgent || AGENTS[0];
+            area.insertAdjacentHTML('beforeend', `
+                <div id="typing" class="flex gap-4">
+                    <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[16px]" style="background: rgba(99,102,241,0.15);">${agent.emoji}</div>
+                    <div class="flex-1">
+                        <div class="text-[12px] font-medium lobe-text-dim mb-1">${agent.name}</div>
+                        <div class="flex items-center gap-1.5 h-5"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+                    </div>
+                </div>
+            `);
+            lucide.createIcons();
+            scrollToBottom();
+            try {
+                const res = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        message: userText,
+                        systemPrompt: agent.prompt
+                    })
+                });
+                const data = await res.json();
+                const reply = data.choices[0].message.content;
+                document.getElementById('typing')?.remove();
+                await appendAIMessage(conv, reply);
+                if (isRegen) showToast('ÄÃ£ táº¡o láº¡i');
+            } catch (e) {
+                document.getElementById('typing')?.remove();
+                await appendAIMessage(conv, `Xin chÃ o! MÃ¬nh lÃ  **${agent.name}** â€” ${agent.desc}.\n\nHiá»‡n táº¡i mÃ¬nh Ä‘ang cháº¡y cháº¿ Ä‘á»™ demo vÃ¬ chÆ°a káº¿t ná»‘i Worker. Khi báº¡n qua Cloudflare, mÃ¬nh sáº½ tráº£ lá»i tháº­t nhÃ©! ðŸ’œ\n\n**Thá»­ há»i mÃ¬nh:** ${agent.tags.map(t => '`' + t + '`').join(' ')}`);
+            }
+        }
+
+        async function appendAIMessage(conv, fullText) {
+            const area = document.getElementById('messagesArea');
+            const idx = conv.messages.length;
+            const agent = state.currentAgent || AGENTS[0];
+            const wrapper = document.createElement('div');
+            wrapper.className = 'ai-msg flex gap-4 animate-fade-in';
+            wrapper.dataset.idx = idx;
+            wrapper.innerHTML = `
+                <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-[16px]" style="background: rgba(99,102,241,0.15);">${agent.emoji}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-[12px] font-medium lobe-text-dim mb-1">${agent.name}</div>
+                    <div class="lobe-text-dim leading-relaxed text-[14px] lobe-markdown" data-body></div>
+                    <div class="ai-actions flex items-center gap-0.5 mt-1.5 -ml-1.5 opacity-0">
+                        <button onclick="copyMessage(this)" class="act-btn" title="Sao chÃ©p"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="speakMessage(this)" class="act-btn" title="Äá»c to"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="regenerateMessage(${idx})" class="act-btn" title="Táº¡o láº¡i"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
+                        <button class="act-btn"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i></button>
+                        <button class="act-btn"><i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+            `;
+            area.appendChild(wrapper);
+            lucide.createIcons();
+            const bodyEl = wrapper.querySelector('[data-body]');
+            if (state.typewriter) {
+                const textNode = document.createTextNode('');
+                bodyEl.appendChild(textNode);
+                for (let i = 0; i < fullText.length; i++) {
+                    textNode.textContent += fullText[i];
+                    if (i % 4 === 0) scrollToBottom();
+                    await new Promise(r => setTimeout(r, 10));
+                }
+                bodyEl.innerHTML = marked.parse(fullText);
+            } else {
+                bodyEl.innerHTML = marked.parse(fullText);
+            }
+            wrapper.querySelector('.ai-actions').classList.remove('opacity-0');
+            conv.messages.push({ role: 'assistant', content: fullText });
+            scrollToBottom();
+            lucide.createIcons();
+        }
+
+        // ============ CHAT ============
+        const sendBtn = document.getElementById('sendBtn');
+        const messageInput = document.getElementById('messageInput');
+
+        async function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+            if (!state.currentAgent) { showToast('Vui lÃ²ng chá»n Agent trÆ°á»›c'); showView('discover'); return; }
+            
+            let conv;
+            if (currentId === null) conv = createConversation(state.currentAgent, text);
+            else conv = conversations.find(c => c.id === currentId);
+            
+            messageInput.value = '';
+            messageInput.style.height = '';
+            conv.messages.push({ role: 'user', content: text });
+            renderMessages(conv.messages);
+            renderHistory();
+            await callAIAndAppend(conv, text);
+        }
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+
+        // ============ HELPERS ============
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+        }
+        function relativeTime(date) {
+            const diff = Math.floor((Date.now() - date) / 1000);
+            if (diff < 60) return 'Vá»«a xong';
+            if (diff < 3600) return Math.floor(diff / 60) + ' phÃºt';
+            if (diff < 86400) return Math.floor(diff / 3600) + ' giá»';
+            if (diff < 172800) return 'HÃ´m qua';
+            return Math.floor(diff / 86400) + ' ngÃ y';
+        }
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastText').textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 2500);
+        }
+        function scrollToBottom() {
+            const c = document.getElementById('chatContainer');
+            c.scrollTop = c.scrollHeight;
+        }
+
+        // ============ THEME ============
+        function toggleTheme() {
+            state.lightMode = !state.lightMode;
+            document.body.classList.toggle('light', state.lightMode);
+            document.getElementById('themeToggle').classList.toggle('active', state.lightMode);
+            document.querySelectorAll('.lobe-input-inner').forEach(el => {
+                el.style.background = state.lightMode ? '#ffffff' : '#111111';
+            });
+            showToast(state.lightMode ? 'â˜€ï¸ Cháº¿ Ä‘á»™ SÃ¡ng' : 'ðŸŒ™ Cháº¿ Ä‘á»™ Tá»‘i');
+        }
+
+        // ============ MOBILE SIDEBAR ============
+        function openMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.add('active');
+            document.getElementById('mobileSidebarOverlay').classList.add('active');
+        }
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.remove('active');
+            document.getElementById('mobileSidebarOverlay').classList.remove('active');
+        }
+
+        // ============ SETTINGS ============
+        function switchTab(tab) {
+            ['profile', 'appearance', 'users'].forEach(t => {
+                const pane = document.getElementById('pane' + t.charAt(0).toUpperCase() + t.slice(1));
+                const tabEl = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+                if (pane) pane.classList.add('hidden');
+                if (tabEl) tabEl.classList.remove('active');
+            });
+            document.getElementById('pane' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden');
+            document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+        }
+
+        function openSettings() {
+            document.getElementById('settingsOverlay').classList.add('active');
+            document.getElementById('settingsPanel').classList.add('active');
+        }
+        function closeSettings() {
+            document.getElementById('settingsOverlay').classList.remove('active');
+            document.getElementById('settingsPanel').classList.remove('active');
+        }
+        function linkAccount(p) {
+            const names = { google: 'Google', apple: 'Apple', facebook: 'Facebook' };
+            showToast(`Äang má»Ÿ Ä‘Äƒng nháº­p ${names[p]}...`);
+            setTimeout(() => showToast('Sáº½ hoáº¡t Ä‘á»™ng khi qua Cloudflare!'), 1500);
+        }
+
+        // ============ ADMIN ============
+        function openAdminLogin() {
+            document.getElementById('adminLoginModal').classList.add('active');
+            setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
+        }
+        function closeAdminLogin() {
+            document.getElementById('adminLoginModal').classList.remove('active');
+            document.getElementById('adminPasswordInput').value = '';
+        }
+        function submitAdminLogin() {
+            const pwd = document.getElementById('adminPasswordInput').value;
+            if (pwd === ADMIN_PASSWORD) {
+                state.isAdmin = true;
+                closeAdminLogin();
+                showToast('âœ… ÄÄƒng nháº­p quáº£n trá»‹ thÃ nh cÃ´ng');
+                document.getElementById('tabUsers').classList.remove('hidden');
+                document.getElementById('adminLoginSection').classList.add('hidden');
+                document.getElementById('adminLogoutSection').classList.remove('hidden');
+                switchTab('users');
+                renderUsers();
+            } else {
+                showToast('âŒ Máº­t kháº©u khÃ´ng Ä‘Ãºng');
+                document.getElementById('adminPasswordInput').value = '';
+            }
+        }
+        function logoutAdmin() {
+            state.isAdmin = false;
+            document.getElementById('tabUsers').classList.add('hidden');
+            document.getElementById('adminLoginSection').classList.remove('hidden');
+            document.getElementById('adminLogoutSection').classList.add('hidden');
+            switchTab('profile');
+            showToast('ÄÃ£ thoÃ¡t cháº¿ Ä‘á»™ quáº£n trá»‹');
+        }
+
+        function renderUsers(filter = '') {
+            const filtered = users.filter(u => u.name.toLowerCase().includes(filter.toLowerCase()));
+            document.getElementById('userCount').textContent = `${users.length} ngÆ°á»i dÃ¹ng`;
+            if (filtered.length === 0) {
+                document.getElementById('usersList').innerHTML = `<div class="text-center text-[12px] lobe-text-mute py-6 italic">${filter ? 'KhÃ´ng tÃ¬m tháº¥y' : 'ChÆ°a cÃ³ thÃ nh viÃªn'}</div>`;
+                return;
+            }
+            document.getElementById('usersList').innerHTML = filtered.map(u => `
+                <div class="lobe-user-row">
+                    <div class="user-avatar" style="background: ${AVATAR_COLORS[u.avatarColor]}">${getInitials(u.name)}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <div class="text-[13px] font-medium lobe-text truncate">${escapeHtml(u.name)}</div>
+                            <span class="role-badge role-${u.role}">${u.role === 'admin' ? 'Admin' : u.role === 'user' ? 'ThÃ nh viÃªn' : 'KhÃ¡ch'}</span>
+                        </div>
+                        <div class="text-[10px] lobe-text-mute truncate mt-0.5">${u.email || 'ChÆ°a cÃ³ email'}</div>
+                    </div>
+                    <div class="flex items-center gap-0.5">
+                        <button onclick="editUser(${u.id})" class="act-btn"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                        ${u.role !== 'admin' ? `<button onclick="deleteUser(${u.id})" class="act-btn"><i data-lucide="trash-2" class="w-3 h-3"></i></button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openAddUserModal() {
+            editingUserId = null;
+            selectedRole = 'user';
+            selectedColor = Math.floor(Math.random() * AVATAR_COLORS.length);
+            document.getElementById('addUserTitle').textContent = 'ThÃªm thÃ nh viÃªn';
+            document.getElementById('newUserName').value = '';
+            document.getElementById('newUserEmail').value = '';
+            renderColorPicker();
+            updateRoleButtons();
+            document.getElementById('addUserModal').classList.add('active');
+            setTimeout(() => document.getElementById('newUserName').focus(), 100);
+        }
+        function editUser(id) {
+            const u = users.find(x => x.id === id);
+            if (!u) return;
+            editingUserId = id;
+            selectedRole = u.role;
+            selectedColor = u.avatarColor;
+            document.getElementById('addUserTitle').textContent = 'Sá»­a thÃ nh viÃªn';
+            document.getElementById('newUserName').value = u.name;
+            document.getElementById('newUserEmail').value = u.email || '';
+            renderColorPicker();
+            updateRoleButtons();
+            document.getElementById('addUserModal').classList.add('active');
+        }
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').classList.remove('active');
+            editingUserId = null;
+        }
+        function renderColorPicker() {
+            document.getElementById('colorPicker').innerHTML = AVATAR_COLORS.map((c, i) => `
+                <button onclick="selectColor(${i})" class="w-8 h-8 rounded-full transition-all ${i === selectedColor ? 'ring-2 ring-offset-2 ring-offset-[#171717] ring-indigo-400 scale-110' : 'hover:scale-105'}" style="background: ${c}"></button>
+            `).join('');
+        }
+        function selectColor(i) { selectedColor = i; renderColorPicker(); }
+        function selectRole(role) { selectedRole = role; updateRoleButtons(); }
+        function updateRoleButtons() {
+            document.querySelectorAll('.role-select').forEach(btn => {
+                const r = btn.dataset.role;
+                if (r === selectedRole) {
+                    btn.style.borderColor = 'rgba(99,102,241,0.6)';
+                    btn.style.background = 'rgba(99,102,241,0.12)';
+                    btn.style.color = '#a5b4fc';
+                    btn.style.fontWeight = '600';
+                } else {
+                    btn.style.borderColor = ''; btn.style.background = '';
+                    btn.style.color = ''; btn.style.fontWeight = '';
+                }
+            });
+        }
+        function saveUser() {
+            const name = document.getElementById('newUserName').value.trim();
+            const email = document.getElementById('newUserEmail').value.trim();
+            if (!name) { showToast('Vui lÃ²ng nháº­p tÃªn'); return; }
+            if (editingUserId) {
+                const u = users.find(x => x.id === editingUserId);
+                if (u) { u.name = name; u.email = email; u.role = selectedRole; u.avatarColor = selectedColor; }
+                showToast('ÄÃ£ cáº­p nháº­t');
+            } else {
+                users.push({ id: Date.now(), name, email, role: selectedRole, avatarColor: selectedColor, createdAt: new Date() });
+                showToast('ÄÃ£ thÃªm thÃ nh viÃªn');
+            }
+            closeAddUserModal();
+            renderUsers(document.getElementById('userSearchInput').value);
+        }
+        function deleteUser(id) {
+            const u = users.find(x => x.id === id);
+            if (!u) return;
+            if (!confirm(`XÃ³a thÃ nh viÃªn "${u.name}"?`)) return;
+            users = users.filter(x => x.id !== id);
+            renderUsers(document.getElementById('userSearchInput').value);
+            showToast('ÄÃ£ xÃ³a');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closeSettings(); closeMobileSidebar(); closeAdminLogin(); closeAddUserModal(); }
+        });
+
+        // ============ INIT ============
+        renderFeatured();
+        renderAgents();
+        renderHistory();
+        showView('discover');
+        lucide.createIcons();
+    </script>
+
