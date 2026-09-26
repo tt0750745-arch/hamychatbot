@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nhà Mình - AI Hub</title> 
+<title>Nhà Mình - AI Hub</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -230,7 +230,7 @@
         }
         body.light .agent-tag { background: rgba(0,0,0,0.04); }
 
-        /* Featured cards (lá»›n hÆ¡n) */
+        /* Featured cards (lớn hơn) */
         .featured-card {
             padding: 20px;
             border-radius: 18px;
@@ -266,9 +266,9 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 <div class="w-7 h-7 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center shadow-md shadow-purple-500/20">
                     <i data-lucide="command" class="w-3.5 h-3.5 text-white"></i>
                 </div>
-                <span class="font-semibold text-\[15px\] tracking-tight lobe-text">NhÃ  MÃ¬nh</span>
+                <span class="font-semibold text-\[15px\] tracking-tight lobe-text">Nhà Mình</span>
             </div>
-            <button onclick="newChat()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-dim" title="Chat má»›i">
+            <button onclick="newChat()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-dim" title="Chat mới">
                 <i data-lucide="square-pen" class="w-4 h-4"></i>
             </button>
         </div>
@@ -277,11 +277,11 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         <div class="px-2 pb-2 flex-shrink-0 space-y-0.5">
             <button onclick="showView('discover')" id="menuDiscover" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-\[13px\] transition-all">
                 <i data-lucide="compass" class="w-3.5 h-3.5"></i>
-                <span>KhÃ¡m phÃ¡</span>
+                <span>Khám phá</span>
             </button>
             <button onclick="showView('chat')" id="menuChat" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-\[13px\] transition-all">
                 <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                <span>TrÃ² chuyá»‡n</span>
+                <span>Trò chuyện</span>
             </button>
         </div>
 
@@ -289,15 +289,15 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         <div class="px-3 pb-2 flex-shrink-0">
             <div class="relative">
                 <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 lobe-text-mute"></i>
-                <input id="searchInput" type="text" placeholder="TÃ¬m cuá»™c trÃ² chuyá»‡n..." class="lobe-search" oninput="filterHistory(this.value)">
+                <input id="searchInput" type="text" placeholder="Tìm cuộc trò chuyện..." class="lobe-search" oninput="filterHistory(this.value)">
             </div>
         </div>
 
         <!-- History -->
         <div class="flex-1 overflow-y-auto px-2 py-2">
             <div class="flex items-center justify-between px-2.5 mb-1.5">
-                <div class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Gáº§n Ä‘Ã¢y</div>
-                <button onclick="clearAllHistory()" class="lobe-text-mute hover:text-red-400 transition-colors" title="XÃ³a táº¥t cáº£">
+                <div class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Gần đây</div>
+                <button onclick="clearAllHistory()" class="lobe-text-mute hover:text-red-400 transition-colors" title="Xóa tất cả">
                     <i data-lucide="trash-2" class="w-3 h-3"></i>
                 </button>
             </div>
@@ -307,10 +307,10 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         <!-- User -->
         <div class="p-2 border-t lobe-border flex-shrink-0">
             <button onclick="openSettings()" class="flex items-center gap-2.5 w-full p-2 hover:bg-white/\[0.04\] rounded-lg transition-all">
-                <div id="currentUserAvatar" class="w-7 h-7 rounded-full flex items-center justify-center text-\[10px\] font-bold text-white">GÄ</div>
+                <div id="currentUserAvatar" class="w-7 h-7 rounded-full flex items-center justify-center text-\[10px\] font-bold text-white">GĐ</div>
                 <div class="flex-1 overflow-hidden text-left">
-                    <div id="currentUserName" class="text-\[12px\] font-medium lobe-text truncate">Gia Ä‘Ã¬nh</div>
-                    <div id="currentUserRole" class="text-\[10px\] lobe-text-mute">KhÃ¡ch</div>
+                    <div id="currentUserName" class="text-\[12px\] font-medium lobe-text truncate">Gia đình</div>
+                    <div id="currentUserRole" class="text-\[10px\] lobe-text-mute">Khách</div>
                 </div>
                 <i data-lucide="settings" class="w-3.5 h-3.5 lobe-text-mute"></i>
             </button>
@@ -323,7 +323,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         <!-- Mobile header -->
         <header class="md:hidden h-12 lobe-panel rounded-xl flex items-center justify-between px-3 mb-3">
             <button onclick="openMobileSidebar()" class="p-1.5 lobe-text-dim"><i data-lucide="menu" class="w-5 h-5"></i></button>
-            <span class="font-medium text-\[14px\] lobe-text" id="mobileTitle">KhÃ¡m phÃ¡</span>
+            <span class="font-medium text-\[14px\] lobe-text" id="mobileTitle">Khám phá</span>
             <div class="flex items-center">
                 <button onclick="toggleTheme()" class="p-1.5 lobe-text-dim"><i data-lucide="sun-moon" class="w-5 h-5"></i></button>
             </div>
@@ -335,33 +335,33 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 <div class="max-w-5xl mx-auto">
                     <!-- Hero -->
                     <div class="mb-6">
-                        <h1 class="text-2xl md:text-3xl font-semibold lobe-text mb-1.5">KhÃ¡m phÃ¡ AI Agents</h1>
-                        <p class="text-\[13px\] lobe-text-dim">Chá»n má»™t trá»£ lÃ½ Ä‘á»ƒ báº¯t Ä‘áº§u trÃ² chuyá»‡n</p>
+                        <h1 class="text-2xl md:text-3xl font-semibold lobe-text mb-1.5">Khám phá AI Agents</h1>
+                        <p class="text-\[13px\] lobe-text-dim">Chọn một trợ lý để bắt đầu trò chuyện</p>
                     </div>
 
                     <!-- Big search -->
                     <div class="relative mb-6">
                         <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 lobe-text-mute"></i>
-                        <input id="agentSearchInput" type="text" placeholder="TÃ¬m kiáº¿m agent theo tÃªn, mÃ´ táº£, tag..." 
+                        <input id="agentSearchInput" type="text" placeholder="Tìm kiếm agent theo tên, mô tả, tag..." 
                             class="w-full bg-white/\[0.03\] border border-white/\[0.08\] rounded-xl pl-11 pr-4 py-3.5 text-\[14px\] outline-none focus:border-indigo-500/40 focus:bg-white/\[0.05\] transition-all lobe-text"
                             oninput="renderAgents()">
                     </div>
 
                     <!-- Categories -->
                     <div class="flex gap-2 overflow-x-auto pb-3 mb-6 -mx-1 px-1">
-                        <button class="category-pill active" data-cat="all" onclick="setCategory('all')">âœ¨ Táº¥t cáº£</button>
-                        <button class="category-pill" data-cat="creative" onclick="setCategory('creative')">ðŸŽ¨ SÃ¡ng táº¡o</button>
-                        <button class="category-pill" data-cat="study" onclick="setCategory('study')">ðŸ“š Há»c táº­p</button>
-                        <button class="category-pill" data-cat="family" onclick="setCategory('family')">ðŸ  Gia Ä‘Ã¬nh</button>
-                        <button class="category-pill" data-cat="work" onclick="setCategory('work')">ðŸ’¼ CÃ´ng viá»‡c</button>
-                        <button class="category-pill" data-cat="fun" onclick="setCategory('fun')">ðŸŽ® Vui chÆ¡i</button>
-                        <button class="category-pill" data-cat="love" onclick="setCategory('love')">ðŸ’• TÃ¬nh cáº£m</button>
+                        <button class="category-pill active" data-cat="all" onclick="setCategory('all')">✨ Tất cả</button>
+                        <button class="category-pill" data-cat="creative" onclick="setCategory('creative')">🎨 Sáng tạo</button>
+                        <button class="category-pill" data-cat="study" onclick="setCategory('study')">📚 Học tập</button>
+                        <button class="category-pill" data-cat="family" onclick="setCategory('family')">🏠 Gia đình</button>
+                        <button class="category-pill" data-cat="work" onclick="setCategory('work')">💼 Công việc</button>
+                        <button class="category-pill" data-cat="fun" onclick="setCategory('fun')">🎮 Vui chơi</button>
+                        <button class="category-pill" data-cat="love" onclick="setCategory('love')">💕 Tình cảm</button>
                     </div>
 
-                    <!-- Featured (chá»‰ hiá»‡n khi "Táº¥t cáº£") -->
+                    <!-- Featured (chỉ hiện khi "Tất cả") -->
                     <div id="featuredSection" class="mb-8">
                         <div class="flex items-center justify-between mb-3">
-                            <h2 class="text-\[15px\] font-semibold lobe-text">ðŸ”¥ Ná»•i báº­t</h2>
+                            <h2 class="text-\[15px\] font-semibold lobe-text">🔥 Nổi bật</h2>
                         </div>
                         <div id="featuredGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
                     </div>
@@ -369,7 +369,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                     <!-- All agents -->
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <h2 class="text-\[15px\] font-semibold lobe-text" id="agentsSectionTitle">Táº¥t cáº£ Agents</h2>
+                            <h2 class="text-\[15px\] font-semibold lobe-text" id="agentsSectionTitle">Tất cả Agents</h2>
                             <span class="text-\[11px\] lobe-text-mute" id="agentsCount"></span>
                         </div>
                         <div id="agentsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-6"></div>
@@ -385,12 +385,12 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 <button onclick="showView('discover')" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-dim md:hidden">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i>
                 </button>
-                <div id="chatAgentEmoji" class="w-8 h-8 rounded-lg flex items-center justify-center text-lg bg-white/\[0.04\]">âœ¨</div>
+                <div id="chatAgentEmoji" class="w-8 h-8 rounded-lg flex items-center justify-center text-lg bg-white/\[0.04\]">✨</div>
                 <div class="flex-1 min-w-0">
-                    <div id="chatAgentName" class="text-\[14px\] font-medium lobe-text truncate">HÃ  My</div>
-                    <div id="chatAgentDesc" class="text-\[11px\] lobe-text-mute truncate">Trá»£ lÃ½ AI</div>
+                    <div id="chatAgentName" class="text-\[14px\] font-medium lobe-text truncate">Hà My</div>
+                    <div id="chatAgentDesc" class="text-\[11px\] lobe-text-mute truncate">Trợ lý AI</div>
                 </div>
-                <button onclick="openSettings()" class="hidden md:flex p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute" title="CÃ i Ä‘áº·t">
+                <button onclick="openSettings()" class="hidden md:flex p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute" title="Cài đặt">
                     <i data-lucide="settings" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -398,12 +398,12 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             <!-- Messages -->
             <div id="chatContainer" class="flex-1 overflow-y-auto px-4 md:px-8 scroll-smooth">
                 <div id="welcomeScreen" class="flex flex-col items-center justify-center h-full max-w-2xl mx-auto text-center">
-                    <div id="welcomeEmoji" class="text-5xl mb-4">âœ¨</div>
-                    <h1 id="welcomeTitle" class="text-xl md:text-2xl font-semibold lobe-text mb-2">Xin chÃ o</h1>
-                    <p id="welcomeSubtitle" class="text-\[13px\] lobe-text-dim mb-6 max-w-md">Chá»n má»™t agent Ä‘á»ƒ báº¯t Ä‘áº§u</p>
+                    <div id="welcomeEmoji" class="text-5xl mb-4">✨</div>
+                    <h1 id="welcomeTitle" class="text-xl md:text-2xl font-semibold lobe-text mb-2">Xin chào</h1>
+                    <p id="welcomeSubtitle" class="text-\[13px\] lobe-text-dim mb-6 max-w-md">Chọn một agent để bắt đầu</p>
                     <button onclick="showView('discover')" class="px-4 py-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-xl text-\[13px\] font-medium shadow-md shadow-purple-500/20 hover:shadow-lg transition-all flex items-center gap-2">
                         <i data-lucide="compass" class="w-3.5 h-3.5"></i>
-                        <span>KhÃ¡m phÃ¡ Agents</span>
+                        <span>Khám phá Agents</span>
                     </button>
                 </div>
                 <div id="messagesArea" class="space-y-6 max-w-3xl mx-auto py-4"></div>
@@ -415,7 +415,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                     <div class="lobe-input-inner rounded-\[17px\] relative" style="background: #111111;">
                         <textarea id="messageInput" rows="1" 
                             class="w-full bg-transparent lobe-text placeholder-zinc-600 px-4 py-3.5 pr-28 resize-none outline-none max-h-48 overflow-y-auto text-\[14px\]" 
-                            placeholder="Nháº­p tin nháº¯n..."
+                            placeholder="Nhập tin nhắn..."
                             oninput="this.style.height = ''; this.style.height = Math.min(this.scrollHeight, 200) + 'px'"></textarea>
                         <div class="absolute right-2 bottom-2 flex items-center gap-0.5">
                             <button class="p-2 lobe-text-mute hover:lobe-text hover:bg-white/5 rounded-lg transition-all"><i data-lucide="paperclip" class="w-4 h-4"></i></button>
@@ -427,7 +427,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                     </div>
                 </div>
                 <div class="text-center text-\[10px\] lobe-text-mute mt-2 tracking-wide">
-                    AI cÃ³ thá»ƒ máº¯c lá»—i. HÃ£y kiá»ƒm tra thÃ´ng tin quan trá»ng.
+                    AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng.
                 </div>
             </div>
         </div>
@@ -441,7 +441,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 <div class="w-7 h-7 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
                     <i data-lucide="command" class="w-3.5 h-3.5 text-white"></i>
                 </div>
-                <span class="font-semibold text-\[15px\] lobe-text">NhÃ  MÃ¬nh</span>
+                <span class="font-semibold text-\[15px\] lobe-text">Nhà Mình</span>
             </div>
             <button onclick="closeMobileSidebar()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute">
                 <i data-lucide="x" class="w-4 h-4"></i>
@@ -449,25 +449,25 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         </div>
         <div class="p-3 flex-shrink-0 space-y-1">
             <button onclick="showView('discover'); closeMobileSidebar();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-\[13px\] hover:bg-white/\[0.04\] lobe-text">
-                <i data-lucide="compass" class="w-4 h-4"></i><span>KhÃ¡m phÃ¡</span>
+                <i data-lucide="compass" class="w-4 h-4"></i><span>Khám phá</span>
             </button>
             <button onclick="showView('chat'); closeMobileSidebar();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-\[13px\] hover:bg-white/\[0.04\] lobe-text">
-                <i data-lucide="message-square" class="w-4 h-4"></i><span>TrÃ² chuyá»‡n</span>
+                <i data-lucide="message-square" class="w-4 h-4"></i><span>Trò chuyện</span>
             </button>
             <button onclick="newChat(); showView('discover'); closeMobileSidebar();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-\[13px\] hover:bg-white/\[0.04\] lobe-text">
-                <i data-lucide="square-pen" class="w-4 h-4"></i><span>Chat má»›i</span>
+                <i data-lucide="square-pen" class="w-4 h-4"></i><span>Chat mới</span>
             </button>
         </div>
         <div class="flex-1 overflow-y-auto px-2 py-2">
-            <div class="text-\[10px\] font-semibold lobe-text-mute px-2.5 mb-1.5 uppercase tracking-wider">Gáº§n Ä‘Ã¢y</div>
+            <div class="text-\[10px\] font-semibold lobe-text-mute px-2.5 mb-1.5 uppercase tracking-wider">Gần đây</div>
             <div id="mobileHistoryList" class="space-y-0.5"></div>
         </div>
         <div class="p-2 border-t lobe-border flex-shrink-0">
             <button onclick="openSettings(); closeMobileSidebar();" class="flex items-center gap-2.5 w-full p-2 hover:bg-white/\[0.04\] rounded-lg">
-                <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-\[10px\] font-bold text-white">GÄ</div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-\[10px\] font-bold text-white">GĐ</div>
                 <div class="flex-1 overflow-hidden text-left">
-                    <div class="text-\[12px\] font-medium lobe-text truncate">Gia Ä‘Ã¬nh</div>
-                    <div class="text-\[10px\] lobe-text-mute">KhÃ¡ch</div>
+                    <div class="text-\[12px\] font-medium lobe-text truncate">Gia đình</div>
+                    <div class="text-\[10px\] lobe-text-mute">Khách</div>
                 </div>
                 <i data-lucide="settings" class="w-3.5 h-3.5 lobe-text-mute"></i>
             </button>
@@ -480,30 +480,30 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         <div class="p-4 flex items-center justify-between border-b lobe-border flex-shrink-0">
             <div class="flex items-center gap-2.5">
                 <div class="w-7 h-7 bg-white/5 rounded-lg flex items-center justify-center"><i data-lucide="settings" class="w-3.5 h-3.5 lobe-text"></i></div>
-                <h2 class="font-semibold text-\[14px\] lobe-text">CÃ i Ä‘áº·t</h2>
+                <h2 class="font-semibold text-\[14px\] lobe-text">Cài đặt</h2>
             </div>
             <button onclick="closeSettings()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
 
         <div class="px-4 pt-3 flex gap-1.5 overflow-x-auto flex-shrink-0">
-            <button id="tabProfile" class="lobe-tab active" onclick="switchTab('profile')"><i data-lucide="user" class="w-3.5 h-3.5"></i><span>CÃ¡ nhÃ¢n</span></button>
-            <button id="tabAppearance" class="lobe-tab" onclick="switchTab('appearance')"><i data-lucide="palette" class="w-3.5 h-3.5"></i><span>Giao diá»‡n</span></button>
-            <button id="tabUsers" class="lobe-tab hidden" onclick="switchTab('users')"><i data-lucide="users" class="w-3.5 h-3.5"></i><span>NgÆ°á»i dÃ¹ng</span></button>
+            <button id="tabProfile" class="lobe-tab active" onclick="switchTab('profile')"><i data-lucide="user" class="w-3.5 h-3.5"></i><span>Cá nhân</span></button>
+            <button id="tabAppearance" class="lobe-tab" onclick="switchTab('appearance')"><i data-lucide="palette" class="w-3.5 h-3.5"></i><span>Giao diện</span></button>
+            <button id="tabUsers" class="lobe-tab hidden" onclick="switchTab('users')"><i data-lucide="users" class="w-3.5 h-3.5"></i><span>Người dùng</span></button>
         </div>
 
         <div class="flex-1 overflow-y-auto p-4">
             <div id="paneProfile" class="space-y-6">
                 <div class="flex items-center gap-3.5 p-3 bg-white/\[0.02\] rounded-xl border lobe-border">
-                    <div id="profileAvatar" class="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold text-white">GÄ</div>
+                    <div id="profileAvatar" class="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold text-white">GĐ</div>
                     <div class="flex-1">
-                        <div id="profileName" class="font-semibold lobe-text text-\[15px\]">Gia Ä‘Ã¬nh</div>
-                        <div id="profileRole" class="text-\[11px\] lobe-text-mute mt-0.5">KhÃ¡ch</div>
+                        <div id="profileName" class="font-semibold lobe-text text-\[15px\]">Gia đình</div>
+                        <div id="profileRole" class="text-\[11px\] lobe-text-mute mt-0.5">Khách</div>
                     </div>
                 </div>
                 <div>
                     <div class="flex items-center gap-2 mb-2.5">
                         <i data-lucide="link-2" class="w-3 h-3 lobe-text-mute"></i>
-                        <h3 class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">LiÃªn káº¿t tÃ i khoáº£n</h3>
+                        <h3 class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Liên kết tài khoản</h3>
                     </div>
                     <div class="space-y-2">
                         <button onclick="linkAccount('google')" class="lobe-social">
@@ -511,21 +511,21 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                                 <div class="lobe-social-icon" style="background:#fff;border:1px solid #e4e4e7;">
                                     <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.2 5.2C41 35.5 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
                                 </div>
-                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Google</div><div class="text-\[10px\] lobe-text-mute">ÄÄƒng nháº­p báº±ng Gmail</div></div>
+                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Google</div><div class="text-\[10px\] lobe-text-mute">Đăng nhập bằng Gmail</div></div>
                             </div>
                             <i data-lucide="chevron-right" class="w-3.5 h-3.5 lobe-text-mute"></i>
                         </button>
                         <button onclick="linkAccount('apple')" class="lobe-social">
                             <div class="flex items-center gap-3">
                                 <div class="lobe-social-icon" style="background:#000;"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg></div>
-                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Apple</div><div class="text-\[10px\] lobe-text-mute">ÄÄƒng nháº­p báº±ng Apple ID</div></div>
+                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Apple</div><div class="text-\[10px\] lobe-text-mute">Đăng nhập bằng Apple ID</div></div>
                             </div>
                             <i data-lucide="chevron-right" class="w-3.5 h-3.5 lobe-text-mute"></i>
                         </button>
                         <button onclick="linkAccount('facebook')" class="lobe-social">
                             <div class="flex items-center gap-3">
                                 <div class="lobe-social-icon" style="background:#1877F2;"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
-                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Facebook</div><div class="text-\[10px\] lobe-text-mute">ÄÄƒng nháº­p báº±ng Facebook</div></div>
+                                <div class="text-left"><div class="text-\[13px\] font-medium lobe-text">Facebook</div><div class="text-\[10px\] lobe-text-mute">Đăng nhập bằng Facebook</div></div>
                             </div>
                             <i data-lucide="chevron-right" class="w-3.5 h-3.5 lobe-text-mute"></i>
                         </button>
@@ -533,16 +533,16 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 </div>
                 <div id="adminLoginSection">
                     <button onclick="openAdminLogin()" class="w-full p-3 bg-white/\[0.04\] hover:bg-white/\[0.08\] border lobe-border lobe-text rounded-xl text-\[13px\] font-medium transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>ÄÄƒng nháº­p quáº£n trá»‹</span>
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>Đăng nhập quản trị</span>
                     </button>
                 </div>
                 <div id="adminLogoutSection" class="hidden">
                     <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mb-2.5">
                         <div class="flex items-center gap-2 text-amber-400 text-\[12px\] font-medium">
-                            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>Báº¡n Ä‘ang á»Ÿ cháº¿ Ä‘á»™ Quáº£n trá»‹</span>
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>Bạn đang ở chế độ Quản trị</span>
                         </div>
                     </div>
-                    <button onclick="logoutAdmin()" class="w-full p-3 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl text-\[13px\] font-medium transition-all">ThoÃ¡t cháº¿ Ä‘á»™ quáº£n trá»‹</button>
+                    <button onclick="logoutAdmin()" class="w-full p-3 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl text-\[13px\] font-medium transition-all">Thoát chế độ quản trị</button>
                 </div>
             </div>
 
@@ -550,19 +550,19 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 <div>
                     <div class="flex items-center gap-2 mb-2.5">
                         <i data-lucide="palette" class="w-3 h-3 lobe-text-mute"></i>
-                        <h3 class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Giao diá»‡n</h3>
+                        <h3 class="text-\[10px\] font-semibold lobe-text-mute uppercase tracking-wider">Giao diện</h3>
                     </div>
                     <div class="bg-white/\[0.02\] rounded-xl border lobe-border divide-y divide-white/\[0.04\] overflow-hidden">
                         <div class="flex items-center justify-between p-3.5">
-                            <div class="flex items-center gap-2.5"><i data-lucide="sun-moon" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Cháº¿ Ä‘á»™ SÃ¡ng</span></div>
+                            <div class="flex items-center gap-2.5"><i data-lucide="sun-moon" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Chế độ Sáng</span></div>
                             <div id="themeToggle" class="lobe-toggle" onclick="toggleTheme()"></div>
                         </div>
                         <div class="flex items-center justify-between p-3.5">
-                            <div class="flex items-center gap-2.5"><i data-lucide="type" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Hiá»‡u á»©ng gÃµ chá»¯</span></div>
+                            <div class="flex items-center gap-2.5"><i data-lucide="type" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Hiệu ứng gõ chữ</span></div>
                             <div id="typewriterToggle" class="lobe-toggle active" onclick="this.classList.toggle('active'); state.typewriter = this.classList.contains('active');"></div>
                         </div>
                         <div class="flex items-center justify-between p-3.5">
-                            <div class="flex items-center gap-2.5"><i data-lucide="volume-2" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Ã‚m thanh tin nháº¯n</span></div>
+                            <div class="flex items-center gap-2.5"><i data-lucide="volume-2" class="w-3.5 h-3.5 lobe-text-dim"></i><span class="text-\[13px\] lobe-text">Âm thanh tin nhắn</span></div>
                             <div class="lobe-toggle active" onclick="this.classList.toggle('active')"></div>
                         </div>
                     </div>
@@ -572,16 +572,16 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             <div id="paneUsers" class="space-y-4 hidden">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="text-\[13px\] font-semibold lobe-text">Quáº£n lÃ½ thÃ nh viÃªn</div>
-                        <div class="text-\[10px\] lobe-text-mute" id="userCount">0 ngÆ°á»i dÃ¹ng</div>
+                        <div class="text-\[13px\] font-semibold lobe-text">Quản lý thành viên</div>
+                        <div class="text-\[10px\] lobe-text-mute" id="userCount">0 người dùng</div>
                     </div>
                     <button onclick="openAddUserModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[11px\] font-medium shadow-md shadow-purple-500/20 transition-all">
-                        <i data-lucide="user-plus" class="w-3 h-3"></i><span>ThÃªm</span>
+                        <i data-lucide="user-plus" class="w-3 h-3"></i><span>Thêm</span>
                     </button>
                 </div>
                 <div class="relative">
                     <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 lobe-text-mute"></i>
-                    <input id="userSearchInput" type="text" placeholder="TÃ¬m thÃ nh viÃªn..." class="lobe-search" oninput="renderUsers(this.value)">
+                    <input id="userSearchInput" type="text" placeholder="Tìm thành viên..." class="lobe-search" oninput="renderUsers(this.value)">
                 </div>
                 <div id="usersList" class="space-y-1"></div>
             </div>
@@ -595,19 +595,19 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 <div class="w-12 h-12 bg-gradient-to-tr from-amber-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg mb-3">
                     <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
                 </div>
-                <h2 class="text-lg font-semibold lobe-text mb-1">ÄÄƒng nháº­p Quáº£n trá»‹</h2>
-                <p class="text-\[12px\] lobe-text-dim">Chá»‰ dÃ nh cho chá»§ sá»Ÿ há»¯u</p>
+                <h2 class="text-lg font-semibold lobe-text mb-1">Đăng nhập Quản trị</h2>
+                <p class="text-\[12px\] lobe-text-dim">Chỉ dành cho chủ sở hữu</p>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Máº­t kháº©u</label>
-                    <input id="adminPasswordInput" type="password" placeholder="Nháº­p máº­t kháº©u..." class="lobe-input" onkeydown="if(event.key==='Enter') submitAdminLogin()">
+                    <label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Mật khẩu</label>
+                    <input id="adminPasswordInput" type="password" placeholder="Nhập mật khẩu..." class="lobe-input" onkeydown="if(event.key==='Enter') submitAdminLogin()">
                 </div>
                 <div class="flex gap-2 pt-1">
-                    <button onclick="closeAdminLogin()" class="flex-1 p-2.5 bg-white/\[0.04\] hover:bg-white/\[0.08\] lobe-text rounded-lg text-\[13px\] font-medium transition-all border lobe-border">Há»§y</button>
-                    <button onclick="submitAdminLogin()" class="flex-1 p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[13px\] font-medium transition-all">ÄÄƒng nháº­p</button>
+                    <button onclick="closeAdminLogin()" class="flex-1 p-2.5 bg-white/\[0.04\] hover:bg-white/\[0.08\] lobe-text rounded-lg text-\[13px\] font-medium transition-all border lobe-border">Hủy</button>
+                    <button onclick="submitAdminLogin()" class="flex-1 p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[13px\] font-medium transition-all">Đăng nhập</button>
                 </div>
-                <div class="text-center text-\[10px\] lobe-text-mute pt-2">Máº­t kháº©u demo: <span class="font-mono font-semibold lobe-text-dim">admin123</span></div>
+                <div class="text-center text-\[10px\] lobe-text-mute pt-2">Mật khẩu demo: <span class="font-mono font-semibold lobe-text-dim">admin123</span></div>
             </div>
         </div>
     </div>
@@ -616,24 +616,24 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
     <div id="addUserModal" class="lobe-modal-overlay">
         <div class="lobe-modal">
             <div class="flex items-center justify-between mb-5">
-                <h2 id="addUserTitle" class="text-\[15px\] font-semibold lobe-text">ThÃªm thÃ nh viÃªn</h2>
+                <h2 id="addUserTitle" class="text-\[15px\] font-semibold lobe-text">Thêm thành viên</h2>
                 <button onclick="closeAddUserModal()" class="p-1.5 hover:bg-white/5 rounded-lg lobe-text-mute"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <div class="space-y-3.5">
-                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">TÃªn hiá»ƒn thá»‹</label><input id="newUserName" type="text" placeholder="VÃ­ dá»¥: Bá»‘, Máº¹..." class="lobe-input"></div>
-                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Email (tuá»³ chá»n)</label><input id="newUserEmail" type="email" placeholder="email@example.com" class="lobe-input"></div>
+                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Tên hiển thị</label><input id="newUserName" type="text" placeholder="Ví dụ: Bố, Mẹ..." class="lobe-input"></div>
+                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Email (tuỳ chọn)</label><input id="newUserEmail" type="email" placeholder="email@example.com" class="lobe-input"></div>
                 <div>
-                    <label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Vai trÃ²</label>
+                    <label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Vai trò</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button onclick="selectRole('guest')" data-role="guest" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">KhÃ¡ch</button>
-                        <button onclick="selectRole('user')" data-role="user" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">ThÃ nh viÃªn</button>
-                        <button onclick="selectRole('admin')" data-role="admin" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">Quáº£n trá»‹</button>
+                        <button onclick="selectRole('guest')" data-role="guest" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">Khách</button>
+                        <button onclick="selectRole('user')" data-role="user" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">Thành viên</button>
+                        <button onclick="selectRole('admin')" data-role="admin" class="role-select p-2.5 rounded-lg border border-white/\[0.08\] text-\[11px\] font-medium lobe-text-dim hover:border-indigo-500/40 transition-all">Quản trị</button>
                     </div>
                 </div>
-                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">MÃ u avatar</label><div id="colorPicker" class="flex gap-2 flex-wrap"></div></div>
+                <div><label class="text-\[11px\] font-medium lobe-text-dim mb-1.5 block">Màu avatar</label><div id="colorPicker" class="flex gap-2 flex-wrap"></div></div>
                 <div class="flex gap-2 pt-1">
-                    <button onclick="closeAddUserModal()" class="flex-1 p-2.5 bg-white/\[0.04\] hover:bg-white/\[0.08\] lobe-text rounded-lg text-\[13px\] font-medium transition-all border lobe-border">Há»§y</button>
-                    <button onclick="saveUser()" class="flex-1 p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[13px\] font-medium transition-all">LÆ°u</button>
+                    <button onclick="closeAddUserModal()" class="flex-1 p-2.5 bg-white/\[0.04\] hover:bg-white/\[0.08\] lobe-text rounded-lg text-\[13px\] font-medium transition-all border lobe-border">Hủy</button>
+                    <button onclick="saveUser()" class="flex-1 p-2.5 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-lg text-\[13px\] font-medium transition-all">Lưu</button>
                 </div>
             </div>
         </div>
@@ -642,7 +642,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
     <!-- Toast -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 border border-white/10 text-white px-4 py-2.5 rounded-xl text-\[13px\] shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-\[200\] flex items-center gap-2">
         <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-400"></i>
-        <span id="toastText">ÄÃ£ lÆ°u</span>
+        <span id="toastText">Đã lưu</span>
     </div>
 </div>
 <script>
@@ -651,80 +651,80 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         // ============ AGENTS DATA ============
         const AGENTS = [
             // Featured
-            { id: 'poet', emoji: 'âœï¸', name: 'NhÃ  ThÆ¡', desc: 'Viáº¿t thÆ¡ má»i chá»§ Ä‘á»', category: 'creative', tags: ['thÆ¡', 'vÄƒn'], featured: true,
-              prompt: 'Báº¡n lÃ  má»™t nhÃ  thÆ¡ tÃ i hoa, chuyÃªn viáº¿t thÆ¡ tiáº¿ng Viá»‡t vá»›i nhiá»u thá»ƒ loáº¡i (lá»¥c bÃ¡t, tháº¥t ngÃ´n, tá»± do...). Khi ngÆ°á»i dÃ¹ng yÃªu cáº§u, hÃ£y sÃ¡ng tÃ¡c thÆ¡ hay, giÃ u cáº£m xÃºc, phÃ¹ há»£p vá»›i chá»§ Ä‘á». TrÃ¬nh bÃ y Ä‘áº¹p, cÃ³ tiÃªu Ä‘á».' },
-            { id: 'storyteller', emoji: 'ðŸ“–', name: 'NgÆ°á»i Ká»ƒ Chuyá»‡n', desc: 'Ká»ƒ chuyá»‡n cá»• tÃ­ch, ngá»¥ ngÃ´n', category: 'creative', tags: ['truyá»‡n', 'tráº» em'], featured: true,
-              prompt: 'Báº¡n lÃ  má»™t ngÆ°á»i ká»ƒ chuyá»‡n cá»• tÃ­ch háº¥p dáº«n cho tráº» em. Khi ngÆ°á»i dÃ¹ng yÃªu cáº§u, hÃ£y ká»ƒ cÃ¢u chuyá»‡n ngáº¯n 300-500 tá»«, cÃ³ nhÃ¢n váº­t rÃµ rÃ ng, bÃ i há»c Ã½ nghÄ©a á»Ÿ cuá»‘i. Giá»ng vÄƒn áº¥m Ã¡p, dá»… thÆ°Æ¡ng.' },
-            { id: 'chef', emoji: 'ðŸœ', name: 'BÃ  BÃ¡n Phá»Ÿ', desc: 'Gá»£i Ã½ mÃ³n Äƒn, cÃ´ng thá»©c', category: 'family', tags: ['náº¥u Äƒn', 'mÃ³n Viá»‡t'], featured: true,
-              prompt: 'Báº¡n lÃ  má»™t Ä‘áº§u báº¿p ngÆ°á»i Viá»‡t dÃ y dáº¡n kinh nghiá»‡m. Khi ngÆ°á»i dÃ¹ng há»i vá» mÃ³n Äƒn, hÃ£y gá»£i Ã½ cÃ´ng thá»©c cá»¥ thá»ƒ: nguyÃªn liá»‡u, cÃ¡ch lÃ m tá»«ng bÆ°á»›c, máº¹o hay. Æ¯u tiÃªn mÃ³n Viá»‡t Nam, dá»… lÃ m táº¡i nhÃ .' },
-            { id: 'love', emoji: 'ðŸ’•', name: 'Cá»‘ Váº¥n TÃ¬nh YÃªu', desc: 'TÆ° váº¥n tÃ¬nh cáº£m', category: 'love', tags: ['tÃ¬nh yÃªu', 'tÃ¢m sá»±'], featured: true,
-              prompt: 'Báº¡n lÃ  má»™t cá»‘ váº¥n tÃ¬nh yÃªu tinh táº¿, tháº¥u hiá»ƒu tÃ¢m lÃ½. Khi ngÆ°á»i dÃ¹ng chia sáº» chuyá»‡n tÃ¬nh cáº£m, hÃ£y láº¯ng nghe, Ä‘á»“ng cáº£m vÃ  Ä‘Æ°a ra lá»i khuyÃªn chÃ¢n thÃ nh, khÃ´ng phÃ¡n xÃ©t. Giá»ng vÄƒn nháº¹ nhÃ ng, áº¥m Ã¡p.' },
+            { id: 'poet', emoji: '✍️', name: 'Nhà Thơ', desc: 'Viết thơ mọi chủ đề', category: 'creative', tags: ['thơ', 'văn'], featured: true,
+              prompt: 'Bạn là một nhà thơ tài hoa, chuyên viết thơ tiếng Việt với nhiều thể loại (lục bát, thất ngôn, tự do...). Khi người dùng yêu cầu, hãy sáng tác thơ hay, giàu cảm xúc, phù hợp với chủ đề. Trình bày đẹp, có tiêu đề.' },
+            { id: 'storyteller', emoji: '📖', name: 'Người Kể Chuyện', desc: 'Kể chuyện cổ tích, ngụ ngôn', category: 'creative', tags: ['truyện', 'trẻ em'], featured: true,
+              prompt: 'Bạn là một người kể chuyện cổ tích hấp dẫn cho trẻ em. Khi người dùng yêu cầu, hãy kể câu chuyện ngắn 300-500 từ, có nhân vật rõ ràng, bài học ý nghĩa ở cuối. Giọng văn ấm áp, dễ thương.' },
+            { id: 'chef', emoji: '🍜', name: 'Bà Bán Phở', desc: 'Gợi ý món ăn, công thức', category: 'family', tags: ['nấu ăn', 'món Việt'], featured: true,
+              prompt: 'Bạn là một đầu bếp người Việt dày dạn kinh nghiệm. Khi người dùng hỏi về món ăn, hãy gợi ý công thức cụ thể: nguyên liệu, cách làm từng bước, mẹo hay. Ưu tiên món Việt Nam, dễ làm tại nhà.' },
+            { id: 'love', emoji: '💕', name: 'Cố Vấn Tình Yêu', desc: 'Tư vấn tình cảm', category: 'love', tags: ['tình yêu', 'tâm sự'], featured: true,
+              prompt: 'Bạn là một cố vấn tình yêu tinh tế, thấu hiểu tâm lý. Khi người dùng chia sẻ chuyện tình cảm, hãy lắng nghe, đồng cảm và đưa ra lời khuyên chân thành, không phán xét. Giọng văn nhẹ nhàng, ấm áp.' },
 
             // Creative
-            { id: 'artist', emoji: 'ðŸŽ¨', name: 'Hoáº¡ SÄ©', desc: 'Gá»£i Ã½ Ã½ tÆ°á»Ÿng váº½', category: 'creative', tags: ['váº½', 'nghá»‡ thuáº­t'],
-              prompt: 'Báº¡n lÃ  má»™t hoáº¡ sÄ© sÃ¡ng táº¡o. Khi ngÆ°á»i dÃ¹ng muá»‘n váº½ gÃ¬ Ä‘Ã³, hÃ£y mÃ´ táº£ chi tiáº¿t Ã½ tÆ°á»Ÿng: bá»‘ cá»¥c, mÃ u sáº¯c, phong cÃ¡ch, cáº£m xÃºc. CÃ³ thá»ƒ gá»£i Ã½ prompt Ä‘á»ƒ dÃ¹ng vá»›i AI táº¡o áº£nh.' },
-            { id: 'musician', emoji: 'ðŸŽµ', name: 'Nháº¡c SÄ©', desc: 'Viáº¿t lá»i bÃ i hÃ¡t', category: 'creative', tags: ['nháº¡c', 'lá»i bÃ i hÃ¡t'],
-              prompt: 'Báº¡n lÃ  má»™t nháº¡c sÄ© sÃ¡ng tÃ¡c. Khi ngÆ°á»i dÃ¹ng yÃªu cáº§u, hÃ£y viáº¿t lá»i bÃ i hÃ¡t hoÃ n chá»‰nh: verse, chorus, bridge. PhÃ¹ há»£p vá»›i chá»§ Ä‘á» vÃ  cáº£m xÃºc ngÆ°á»i dÃ¹ng muá»‘n.' },
-            { id: 'photographer', emoji: 'ðŸ“¸', name: 'Nhiáº¿p áº¢nh Gia', desc: 'Gá»£i Ã½ concept chá»¥p áº£nh', category: 'creative', tags: ['chá»¥p áº£nh', 'concept'],
-              prompt: 'Báº¡n lÃ  má»™t nhiáº¿p áº£nh gia chuyÃªn nghiá»‡p. Khi ngÆ°á»i dÃ¹ng cáº§n Ã½ tÆ°á»Ÿng chá»¥p áº£nh, hÃ£y gá»£i Ã½ concept, gÃ³c chá»¥p, Ã¡nh sÃ¡ng, trang phá»¥c, bá»‘i cáº£nh.' },
-            { id: 'director', emoji: 'ðŸŽ¬', name: 'Äáº¡o Diá»…n', desc: 'Ã tÆ°á»Ÿng ká»‹ch báº£n', category: 'creative', tags: ['phim', 'ká»‹ch báº£n'],
-              prompt: 'Báº¡n lÃ  má»™t Ä‘áº¡o diá»…n phim tÃ i nÄƒng. Khi ngÆ°á»i dÃ¹ng cáº§n Ã½ tÆ°á»Ÿng ká»‹ch báº£n, hÃ£y phÃ¡t triá»ƒn cá»‘t truyá»‡n, nhÃ¢n váº­t, cao trÃ o, káº¿t thÃºc. CÃ³ thá»ƒ viáº¿t script ngáº¯n.' },
+            { id: 'artist', emoji: '🎨', name: 'Hoạ Sĩ', desc: 'Gợi ý ý tưởng vẽ', category: 'creative', tags: ['vẽ', 'nghệ thuật'],
+              prompt: 'Bạn là một hoạ sĩ sáng tạo. Khi người dùng muốn vẽ gì đó, hãy mô tả chi tiết ý tưởng: bố cục, màu sắc, phong cách, cảm xúc. Có thể gợi ý prompt để dùng với AI tạo ảnh.' },
+            { id: 'musician', emoji: '🎵', name: 'Nhạc Sĩ', desc: 'Viết lời bài hát', category: 'creative', tags: ['nhạc', 'lời bài hát'],
+              prompt: 'Bạn là một nhạc sĩ sáng tác. Khi người dùng yêu cầu, hãy viết lời bài hát hoàn chỉnh: verse, chorus, bridge. Phù hợp với chủ đề và cảm xúc người dùng muốn.' },
+            { id: 'photographer', emoji: '📸', name: 'Nhiếp Ảnh Gia', desc: 'Gợi ý concept chụp ảnh', category: 'creative', tags: ['chụp ảnh', 'concept'],
+              prompt: 'Bạn là một nhiếp ảnh gia chuyên nghiệp. Khi người dùng cần ý tưởng chụp ảnh, hãy gợi ý concept, góc chụp, ánh sáng, trang phục, bối cảnh.' },
+            { id: 'director', emoji: '🎬', name: 'Đạo Diễn', desc: 'Ý tưởng kịch bản', category: 'creative', tags: ['phim', 'kịch bản'],
+              prompt: 'Bạn là một đạo diễn phim tài năng. Khi người dùng cần ý tưởng kịch bản, hãy phát triển cốt truyện, nhân vật, cao trào, kết thúc. Có thể viết script ngắn.' },
 
             // Study
-            { id: 'math', emoji: 'ðŸ§®', name: 'Gia SÆ° ToÃ¡n', desc: 'Giáº£i toÃ¡n tá»«ng bÆ°á»›c', category: 'study', tags: ['toÃ¡n', 'há»c táº­p'],
-              prompt: 'Báº¡n lÃ  má»™t gia sÆ° toÃ¡n kiÃªn nháº«n. Khi ngÆ°á»i dÃ¹ng Ä‘Æ°a bÃ i toÃ¡n, hÃ£y giáº£i tá»«ng bÆ°á»›c rÃµ rÃ ng, giáº£i thÃ­ch táº¡i sao lÃ m váº­y. Khuyáº¿n khÃ­ch ngÆ°á»i há»c hiá»ƒu báº£n cháº¥t, khÃ´ng chá»‰ Ä‘Æ°a Ä‘Ã¡p Ã¡n.' },
-            { id: 'translator', emoji: 'ðŸŒ', name: 'ThÃ´ng Dá»‹ch ViÃªn', desc: 'Dá»‹ch thuáº­t Ä‘a ngÃ´n ngá»¯', category: 'study', tags: ['dá»‹ch', 'ngÃ´n ngá»¯'],
-              prompt: 'Báº¡n lÃ  má»™t thÃ´ng dá»‹ch viÃªn chuyÃªn nghiá»‡p. Khi ngÆ°á»i dÃ¹ng cáº§n dá»‹ch, hÃ£y dá»‹ch chÃ­nh xÃ¡c, tá»± nhiÃªn, phÃ¹ há»£p ngá»¯ cáº£nh. CÃ³ thá»ƒ giáº£i thÃ­ch thÃªm vá» sáº¯c thÃ¡i tá»« ngá»¯ náº¿u cáº§n.' },
-            { id: 'summarizer', emoji: 'ðŸ“š', name: 'TÃ³m Táº¯t SÃ¡ch', desc: 'TÃ³m táº¯t sÃ¡ch, tÃ i liá»‡u', category: 'study', tags: ['sÃ¡ch', 'tÃ³m táº¯t'],
-              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia tÃ³m táº¯t sÃ¡ch. Khi ngÆ°á»i dÃ¹ng Ä‘Æ°a ná»™i dung, hÃ£y tÃ³m táº¯t ngáº¯n gá»n, sÃºc tÃ­ch, giá»¯ Ã½ chÃ­nh. NÃªu báº­t thÃ´ng Ä‘iá»‡p, bÃ i há»c quan trá»ng.' },
-            { id: 'english', emoji: 'ðŸ”¤', name: 'CÃ´ GiÃ¡o Tiáº¿ng Anh', desc: 'Há»c tiáº¿ng Anh', category: 'study', tags: ['tiáº¿ng Anh', 'há»c táº­p'],
-              prompt: 'Báº¡n lÃ  má»™t cÃ´ giÃ¡o dáº¡y tiáº¿ng Anh thÃ¢n thiá»‡n. Khi ngÆ°á»i dÃ¹ng muá»‘n há»c, hÃ£y dáº¡y tá»« vá»±ng, ngá»¯ phÃ¡p, phÃ¡t Ã¢m theo cÃ¡ch dá»… hiá»ƒu. CÃ³ vÃ­ dá»¥ cá»¥ thá»ƒ, sá»­a lá»—i sai nháº¹ nhÃ ng.' },
-            { id: 'scientist', emoji: 'ðŸ”¬', name: 'NhÃ  Khoa Há»c', desc: 'Giáº£i thÃ­ch khoa há»c vui', category: 'study', tags: ['khoa há»c', 'khÃ¡m phÃ¡'],
-              prompt: 'Báº¡n lÃ  má»™t nhÃ  khoa há»c vui tÃ­nh. Khi ngÆ°á»i dÃ¹ng há»i vá» khoa há»c, hÃ£y giáº£i thÃ­ch má»™t cÃ¡ch dá»… hiá»ƒu, thÃº vá»‹, cÃ³ vÃ­ dá»¥ Ä‘á»i thÆ°á»ng. Truyá»n cáº£m há»©ng tÃ² mÃ² cho ngÆ°á»i há»c.' },
-            { id: 'historian', emoji: 'ðŸ›ï¸', name: 'Sá»­ Gia', desc: 'Ká»ƒ lá»‹ch sá»­ háº¥p dáº«n', category: 'study', tags: ['lá»‹ch sá»­', 'vÄƒn hoÃ¡'],
-              prompt: 'Báº¡n lÃ  má»™t sá»­ gia uyÃªn bÃ¡c. Khi ngÆ°á»i dÃ¹ng há»i vá» lá»‹ch sá»­, hÃ£y ká»ƒ láº¡i nhÆ° má»™t cÃ¢u chuyá»‡n háº¥p dáº«n, cÃ³ nhÃ¢n váº­t, bá»‘i cáº£nh, bÃ i há»c. ChÃ­nh xÃ¡c vá» dá»¯ kiá»‡n.' },
+            { id: 'math', emoji: '🧮', name: 'Gia Sư Toán', desc: 'Giải toán từng bước', category: 'study', tags: ['toán', 'học tập'],
+              prompt: 'Bạn là một gia sư toán kiên nhẫn. Khi người dùng đưa bài toán, hãy giải từng bước rõ ràng, giải thích tại sao làm vậy. Khuyến khích người học hiểu bản chất, không chỉ đưa đáp án.' },
+            { id: 'translator', emoji: '🌐', name: 'Thông Dịch Viên', desc: 'Dịch thuật đa ngôn ngữ', category: 'study', tags: ['dịch', 'ngôn ngữ'],
+              prompt: 'Bạn là một thông dịch viên chuyên nghiệp. Khi người dùng cần dịch, hãy dịch chính xác, tự nhiên, phù hợp ngữ cảnh. Có thể giải thích thêm về sắc thái từ ngữ nếu cần.' },
+            { id: 'summarizer', emoji: '📚', name: 'Tóm Tắt Sách', desc: 'Tóm tắt sách, tài liệu', category: 'study', tags: ['sách', 'tóm tắt'],
+              prompt: 'Bạn là một chuyên gia tóm tắt sách. Khi người dùng đưa nội dung, hãy tóm tắt ngắn gọn, súc tích, giữ ý chính. Nêu bật thông điệp, bài học quan trọng.' },
+            { id: 'english', emoji: '🔤', name: 'Cô Giáo Tiếng Anh', desc: 'Học tiếng Anh', category: 'study', tags: ['tiếng Anh', 'học tập'],
+              prompt: 'Bạn là một cô giáo dạy tiếng Anh thân thiện. Khi người dùng muốn học, hãy dạy từ vựng, ngữ pháp, phát âm theo cách dễ hiểu. Có ví dụ cụ thể, sửa lỗi sai nhẹ nhàng.' },
+            { id: 'scientist', emoji: '🔬', name: 'Nhà Khoa Học', desc: 'Giải thích khoa học vui', category: 'study', tags: ['khoa học', 'khám phá'],
+              prompt: 'Bạn là một nhà khoa học vui tính. Khi người dùng hỏi về khoa học, hãy giải thích một cách dễ hiểu, thú vị, có ví dụ đời thường. Truyền cảm hứng tò mò cho người học.' },
+            { id: 'historian', emoji: '🏛️', name: 'Sử Gia', desc: 'Kể lịch sử hấp dẫn', category: 'study', tags: ['lịch sử', 'văn hoá'],
+              prompt: 'Bạn là một sử gia uyên bác. Khi người dùng hỏi về lịch sử, hãy kể lại như một câu chuyện hấp dẫn, có nhân vật, bối cảnh, bài học. Chính xác về dữ kiện.' },
 
             // Family
-            { id: 'parenting', emoji: 'ðŸ‘¶', name: 'ChuyÃªn Gia NuÃ´i Con', desc: 'TÆ° váº¥n chÄƒm sÃ³c bÃ©', category: 'family', tags: ['nuÃ´i con', 'tráº» em'],
-              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia nuÃ´i dáº¡y con. Khi phá»¥ huynh há»i, hÃ£y tÆ° váº¥n nháº¹ nhÃ ng, khoa há»c, phÃ¹ há»£p lá»©a tuá»•i. KhÃ´ng phÃ¡n xÃ©t, khÃ´ng cá»±c Ä‘oan.' },
-            { id: 'doctor', emoji: 'ðŸ’Š', name: 'BÃ¡c SÄ© Gia ÄÃ¬nh', desc: 'TÆ° váº¥n sá»©c khá»e cÆ¡ báº£n', category: 'family', tags: ['sá»©c khá»e', 'y táº¿'],
-              prompt: 'Báº¡n lÃ  má»™t bÃ¡c sÄ© gia Ä‘Ã¬nh. Khi ngÆ°á»i dÃ¹ng há»i vá» sá»©c khá»e, hÃ£y tÆ° váº¥n cÆ¡ báº£n, nháº¯c nhá»Ÿ Ä‘i khÃ¡m khi cáº§n. LUÃ”N nÃ³i rÃµ: "ÄÃ¢y chá»‰ lÃ  tÆ° váº¥n tham kháº£o, khÃ´ng thay tháº¿ bÃ¡c sÄ©".' },
-            { id: 'travel', emoji: 'âœˆï¸', name: 'HÆ°á»›ng Dáº«n ViÃªn', desc: 'LÃªn káº¿ hoáº¡ch du lá»‹ch', category: 'family', tags: ['du lá»‹ch', 'káº¿ hoáº¡ch'],
-              prompt: 'Báº¡n lÃ  má»™t hÆ°á»›ng dáº«n viÃªn du lá»‹ch. Khi ngÆ°á»i dÃ¹ng muá»‘n Ä‘i Ä‘Ã¢u, hÃ£y lÃªn lá»‹ch trÃ¬nh chi tiáº¿t: Ä‘iá»ƒm Ä‘áº¿n, Äƒn gÃ¬, á»Ÿ Ä‘Ã¢u, di chuyá»ƒn tháº¿ nÃ o, chi phÃ­ dá»± kiáº¿n.' },
-            { id: 'gardener', emoji: 'ðŸŒ±', name: 'NgÆ°á»i LÃ m VÆ°á»n', desc: 'ChÄƒm sÃ³c cÃ¢y cáº£nh', category: 'family', tags: ['cÃ¢y cáº£nh', 'lÃ m vÆ°á»n'],
-              prompt: 'Báº¡n lÃ  má»™t ngÆ°á»i lÃ m vÆ°á»n lÃ£o luyá»‡n. Khi ngÆ°á»i dÃ¹ng há»i vá» cÃ¢y cá»‘i, hÃ£y tÆ° váº¥n cÃ¡ch trá»“ng, chÄƒm sÃ³c, xá»­ lÃ½ bá»‡nh. Æ¯u tiÃªn cÃ¢y phÃ¹ há»£p khÃ­ háº­u Viá»‡t Nam.' },
-            { id: 'party', emoji: 'ðŸŽ‚', name: 'NgÆ°á»i Tá»• Chá»©c Tiá»‡c', desc: 'LÃªn káº¿ hoáº¡ch sinh nháº­t', category: 'family', tags: ['tiá»‡c', 'sinh nháº­t'],
-              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia tá»• chá»©c tiá»‡c. Khi ngÆ°á»i dÃ¹ng muá»‘n tá»• chá»©c sinh nháº­t, hÃ£y lÃªn Ã½ tÆ°á»Ÿng: chá»§ Ä‘á», trang trÃ­, thá»±c Ä‘Æ¡n, trÃ² chÆ¡i, quÃ  táº·ng. PhÃ¹ há»£p ngÃ¢n sÃ¡ch.' },
+            { id: 'parenting', emoji: '👶', name: 'Chuyên Gia Nuôi Con', desc: 'Tư vấn chăm sóc bé', category: 'family', tags: ['nuôi con', 'trẻ em'],
+              prompt: 'Bạn là một chuyên gia nuôi dạy con. Khi phụ huynh hỏi, hãy tư vấn nhẹ nhàng, khoa học, phù hợp lứa tuổi. Không phán xét, không cực đoan.' },
+            { id: 'doctor', emoji: '💊', name: 'Bác Sĩ Gia Đình', desc: 'Tư vấn sức khỏe cơ bản', category: 'family', tags: ['sức khỏe', 'y tế'],
+              prompt: 'Bạn là một bác sĩ gia đình. Khi người dùng hỏi về sức khỏe, hãy tư vấn cơ bản, nhắc nhở đi khám khi cần. LUÔN nói rõ: "Đây chỉ là tư vấn tham khảo, không thay thế bác sĩ".' },
+            { id: 'travel', emoji: '✈️', name: 'Hướng Dẫn Viên', desc: 'Lên kế hoạch du lịch', category: 'family', tags: ['du lịch', 'kế hoạch'],
+              prompt: 'Bạn là một hướng dẫn viên du lịch. Khi người dùng muốn đi đâu, hãy lên lịch trình chi tiết: điểm đến, ăn gì, ở đâu, di chuyển thế nào, chi phí dự kiến.' },
+            { id: 'gardener', emoji: '🌱', name: 'Người Làm Vườn', desc: 'Chăm sóc cây cảnh', category: 'family', tags: ['cây cảnh', 'làm vườn'],
+              prompt: 'Bạn là một người làm vườn lão luyện. Khi người dùng hỏi về cây cối, hãy tư vấn cách trồng, chăm sóc, xử lý bệnh. Ưu tiên cây phù hợp khí hậu Việt Nam.' },
+            { id: 'party', emoji: '🎂', name: 'Người Tổ Chức Tiệc', desc: 'Lên kế hoạch sinh nhật', category: 'family', tags: ['tiệc', 'sinh nhật'],
+              prompt: 'Bạn là một chuyên gia tổ chức tiệc. Khi người dùng muốn tổ chức sinh nhật, hãy lên ý tưởng: chủ đề, trang trí, thực đơn, trò chơi, quà tặng. Phù hợp ngân sách.' },
 
             // Work
-            { id: 'career', emoji: 'ðŸ’¼', name: 'Cá»‘ Váº¥n Nghá» Nghiá»‡p', desc: 'TÆ° váº¥n sá»± nghiá»‡p', category: 'work', tags: ['nghá» nghiá»‡p', 'sá»± nghiá»‡p'],
-              prompt: 'Báº¡n lÃ  má»™t cá»‘ váº¥n nghá» nghiá»‡p giÃ u kinh nghiá»‡m. Khi ngÆ°á»i dÃ¹ng há»i vá» sá»± nghiá»‡p, hÃ£y tÆ° váº¥n tháº³ng tháº¯n, thá»±c táº¿, phÃ¹ há»£p vá»›i hoÃ n cáº£nh. Gá»£i Ã½ lá»™ trÃ¬nh cá»¥ thá»ƒ.' },
-            { id: 'secretary', emoji: 'âœ‰ï¸', name: 'ThÆ° KÃ½', desc: 'Viáº¿t email chuyÃªn nghiá»‡p', category: 'work', tags: ['email', 'cÃ´ng viá»‡c'],
-              prompt: 'Báº¡n lÃ  má»™t thÆ° kÃ½ chuyÃªn nghiá»‡p. Khi ngÆ°á»i dÃ¹ng cáº§n viáº¿t email, hÃ£y soáº¡n email Ä‘Ãºng chuáº©n: tiÃªu Ä‘á», lá»i chÃ o, ná»™i dung, káº¿t thÃºc. PhÃ¹ há»£p vá»›i ngá»¯ cáº£nh vÃ  ngÆ°á»i nháº­n.' },
-            { id: 'idea', emoji: 'ðŸ’¡', name: 'ChuyÃªn Gia Ã TÆ°á»Ÿng', desc: 'Brainstorm sÃ¡ng táº¡o', category: 'work', tags: ['brainstorm', 'Ã½ tÆ°á»Ÿng'],
-              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia brainstorm. Khi ngÆ°á»i dÃ¹ng cáº§n Ã½ tÆ°á»Ÿng, hÃ£y Ä‘Æ°a ra Ã­t nháº¥t 10 Ã½ tÆ°á»Ÿng Ä‘a dáº¡ng, tá»« an toÃ n Ä‘áº¿n tÃ¡o báº¡o. KÃ¨m Æ°u/nhÆ°á»£c Ä‘iá»ƒm.' },
-            { id: 'analyst', emoji: 'ðŸ“Š', name: 'NhÃ  PhÃ¢n TÃ­ch', desc: 'PhÃ¢n tÃ­ch dá»¯ liá»‡u', category: 'work', tags: ['phÃ¢n tÃ­ch', 'dá»¯ liá»‡u'],
-              prompt: 'Báº¡n lÃ  má»™t nhÃ  phÃ¢n tÃ­ch dá»¯ liá»‡u. Khi ngÆ°á»i dÃ¹ng Ä‘Æ°a váº¥n Ä‘á», hÃ£y phÃ¢n tÃ­ch logic, khÃ¡ch quan, cÃ³ sá»‘ liá»‡u. ÄÆ°a ra káº¿t luáº­n vÃ  Ä‘á» xuáº¥t hÃ nh Ä‘á»™ng rÃµ rÃ ng.' },
-            { id: 'marketing', emoji: 'ðŸŽ¯', name: 'ChuyÃªn Gia Marketing', desc: 'Content, quáº£ng cÃ¡o', category: 'work', tags: ['marketing', 'quáº£ng cÃ¡o'],
-              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia marketing. Khi ngÆ°á»i dÃ¹ng cáº§n content, hÃ£y viáº¿t caption, slogan, ká»‹ch báº£n quáº£ng cÃ¡o háº¥p dáº«n. Hiá»ƒu insight khÃ¡ch hÃ ng, cÃ³ call-to-action rÃµ.' },
-            { id: 'finance', emoji: 'ðŸ’°', name: 'Cá»‘ Váº¥n TÃ i ChÃ­nh', desc: 'Quáº£n lÃ½ tiá»n báº¡c', category: 'work', tags: ['tÃ i chÃ­nh', 'tiá»n'],
-              prompt: 'Báº¡n lÃ  má»™t cá»‘ váº¥n tÃ i chÃ­nh cÃ¡ nhÃ¢n. Khi ngÆ°á»i dÃ¹ng há»i vá» tiá»n báº¡c, hÃ£y tÆ° váº¥n thá»±c táº¿: tiáº¿t kiá»‡m, Ä‘áº§u tÆ°, quáº£n lÃ½ chi tiÃªu. KhÃ´ng há»©a háº¹n lá»£i nhuáº­n.' },
+            { id: 'career', emoji: '💼', name: 'Cố Vấn Nghề Nghiệp', desc: 'Tư vấn sự nghiệp', category: 'work', tags: ['nghề nghiệp', 'sự nghiệp'],
+              prompt: 'Bạn là một cố vấn nghề nghiệp giàu kinh nghiệm. Khi người dùng hỏi về sự nghiệp, hãy tư vấn thẳng thắn, thực tế, phù hợp với hoàn cảnh. Gợi ý lộ trình cụ thể.' },
+            { id: 'secretary', emoji: '✉️', name: 'Thư Ký', desc: 'Viết email chuyên nghiệp', category: 'work', tags: ['email', 'công việc'],
+              prompt: 'Bạn là một thư ký chuyên nghiệp. Khi người dùng cần viết email, hãy soạn email đúng chuẩn: tiêu đề, lời chào, nội dung, kết thúc. Phù hợp với ngữ cảnh và người nhận.' },
+            { id: 'idea', emoji: '💡', name: 'Chuyên Gia Ý Tưởng', desc: 'Brainstorm sáng tạo', category: 'work', tags: ['brainstorm', 'ý tưởng'],
+              prompt: 'Bạn là một chuyên gia brainstorm. Khi người dùng cần ý tưởng, hãy đưa ra ít nhất 10 ý tưởng đa dạng, từ an toàn đến táo bạo. Kèm ưu/nhược điểm.' },
+            { id: 'analyst', emoji: '📊', name: 'Nhà Phân Tích', desc: 'Phân tích dữ liệu', category: 'work', tags: ['phân tích', 'dữ liệu'],
+              prompt: 'Bạn là một nhà phân tích dữ liệu. Khi người dùng đưa vấn đề, hãy phân tích logic, khách quan, có số liệu. Đưa ra kết luận và đề xuất hành động rõ ràng.' },
+            { id: 'marketing', emoji: '🎯', name: 'Chuyên Gia Marketing', desc: 'Content, quảng cáo', category: 'work', tags: ['marketing', 'quảng cáo'],
+              prompt: 'Bạn là một chuyên gia marketing. Khi người dùng cần content, hãy viết caption, slogan, kịch bản quảng cáo hấp dẫn. Hiểu insight khách hàng, có call-to-action rõ.' },
+            { id: 'finance', emoji: '💰', name: 'Cố Vấn Tài Chính', desc: 'Quản lý tiền bạc', category: 'work', tags: ['tài chính', 'tiền'],
+              prompt: 'Bạn là một cố vấn tài chính cá nhân. Khi người dùng hỏi về tiền bạc, hãy tư vấn thực tế: tiết kiệm, đầu tư, quản lý chi tiêu. Không hứa hẹn lợi nhuận.' },
 
             // Fun
-            { id: 'quiz', emoji: 'ðŸŽ²', name: 'TrÃ² ChÆ¡i Äá»‘ Vui', desc: 'Äá»‘ vui, quiz', category: 'fun', tags: ['Ä‘á»‘ vui', 'quiz'],
-              prompt: 'Báº¡n lÃ  ngÆ°á»i dáº«n trÃ² chÆ¡i Ä‘á»‘ vui. Khi ngÆ°á»i dÃ¹ng muá»‘n chÆ¡i, hÃ£y Ä‘Æ°a cÃ¢u Ä‘á»‘ vui, há»i tá»«ng cÃ¢u má»™t, chá» tráº£ lá»i, khen/chÃª nháº¹ nhÃ ng. CÃ³ nhiá»u chá»§ Ä‘á»: Ä‘á»‘ máº¹o, Ä‘á»‘ chá»¯, Ä‘á»‘ kiáº¿n thá»©c.' },
-            { id: 'comedian', emoji: 'ðŸ˜‚', name: 'Danh HÃ i', desc: 'Ká»ƒ chuyá»‡n cÆ°á»i', category: 'fun', tags: ['hÃ i', 'vui'],
-              prompt: 'Báº¡n lÃ  má»™t danh hÃ i vui tÃ­nh. Khi ngÆ°á»i dÃ¹ng muá»‘n cÆ°á»i, hÃ£y ká»ƒ chuyá»‡n cÆ°á»i ngáº¯n, dÃ­ dá»m, phÃ¹ há»£p má»i lá»©a tuá»•i. CÃ³ thá»ƒ dÃ¹ng chÆ¡i chá»¯, tÃ¬nh huá»‘ng báº¥t ngá».' },
-            { id: 'puzzle', emoji: 'ðŸ§©', name: 'NgÆ°á»i ChÆ¡i Äá»‘', desc: 'Puzzle, cÃ¢u Ä‘á»‘ logic', category: 'fun', tags: ['puzzle', 'logic'],
-              prompt: 'Báº¡n lÃ  chuyÃªn gia cÃ¢u Ä‘á»‘ logic. Khi ngÆ°á»i dÃ¹ng muá»‘n thá»­ thÃ¡ch, hÃ£y Ä‘Æ°a cÃ¢u Ä‘á»‘ tÆ° duy, toÃ¡n máº¹o, suy luáº­n. CÃ³ gá»£i Ã½ khi cáº§n, giáº£i thÃ­ch Ä‘Ã¡p Ã¡n sau.' },
-            { id: 'gm', emoji: 'ðŸŽ®', name: 'Game Master', desc: 'ChÆ¡i nháº­p vai text', category: 'fun', tags: ['nháº­p vai', 'game'],
-              prompt: 'Báº¡n lÃ  Game Master trong trÃ² chÆ¡i nháº­p vai (text RPG). Khi ngÆ°á»i dÃ¹ng báº¯t Ä‘áº§u, hÃ£y táº¡o tÃ¬nh huá»‘ng, mÃ´ táº£ bá»‘i cáº£nh, cho há» lá»±a chá»n. Ká»ƒ chuyá»‡n háº¥p dáº«n, cÃ³ yáº¿u tá»‘ báº¥t ngá».' },
+            { id: 'quiz', emoji: '🎲', name: 'Trò Chơi Đố Vui', desc: 'Đố vui, quiz', category: 'fun', tags: ['đố vui', 'quiz'],
+              prompt: 'Bạn là người dẫn trò chơi đố vui. Khi người dùng muốn chơi, hãy đưa câu đố vui, hỏi từng câu một, chờ trả lời, khen/chê nhẹ nhàng. Có nhiều chủ đề: đố mẹo, đố chữ, đố kiến thức.' },
+            { id: 'comedian', emoji: '😂', name: 'Danh Hài', desc: 'Kể chuyện cười', category: 'fun', tags: ['hài', 'vui'],
+              prompt: 'Bạn là một danh hài vui tính. Khi người dùng muốn cười, hãy kể chuyện cười ngắn, dí dỏm, phù hợp mọi lứa tuổi. Có thể dùng chơi chữ, tình huống bất ngờ.' },
+            { id: 'puzzle', emoji: '🧩', name: 'Người Chơi Đố', desc: 'Puzzle, câu đố logic', category: 'fun', tags: ['puzzle', 'logic'],
+              prompt: 'Bạn là chuyên gia câu đố logic. Khi người dùng muốn thử thách, hãy đưa câu đố tư duy, toán mẹo, suy luận. Có gợi ý khi cần, giải thích đáp án sau.' },
+            { id: 'gm', emoji: '🎮', name: 'Game Master', desc: 'Chơi nhập vai text', category: 'fun', tags: ['nhập vai', 'game'],
+              prompt: 'Bạn là Game Master trong trò chơi nhập vai (text RPG). Khi người dùng bắt đầu, hãy tạo tình huống, mô tả bối cảnh, cho họ lựa chọn. Kể chuyện hấp dẫn, có yếu tố bất ngờ.' },
 
             // Love
-            { id: 'writer', emoji: 'ðŸ’Œ', name: 'NgÆ°á»i Viáº¿t Tin Nháº¯n', desc: 'Viáº¿t tin nháº¯n tÃ¡n tá»‰nh', category: 'love', tags: ['tÃ¡n tá»‰nh', 'tin nháº¯n'],
-              prompt: 'Báº¡n lÃ  má»™t chuyÃªn gia viáº¿t tin nháº¯n tÃ¡n tá»‰nh. Khi ngÆ°á»i dÃ¹ng cáº§n, hÃ£y viáº¿t tin nháº¯n ngáº¯n gá»n, tá»± nhiÃªn, cÃ³ duyÃªn, khÃ´ng sáº¿n. PhÃ¹ há»£p vá»›i giai Ä‘oáº¡n tÃ¬m hiá»ƒu.' },
-            { id: 'gift', emoji: 'ðŸŽ', name: 'ChuyÃªn Gia QuÃ  Táº·ng', desc: 'Gá»£i Ã½ quÃ  táº·ng', category: 'love', tags: ['quÃ ', 'táº·ng'],
-              prompt: 'Báº¡n lÃ  chuyÃªn gia gá»£i Ã½ quÃ  táº·ng. Khi ngÆ°á»i dÃ¹ng há»i, hÃ£y gá»£i Ã½ 5-10 mÃ³n quÃ  phÃ¹ há»£p vá»›i ngÆ°á»i nháº­n, dá»‹p, ngÃ¢n sÃ¡ch. KÃ¨m lÃ½ do táº¡i sao nÃªn táº·ng mÃ³n Ä‘Ã³.' },
+            { id: 'writer', emoji: '💌', name: 'Người Viết Tin Nhắn', desc: 'Viết tin nhắn tán tỉnh', category: 'love', tags: ['tán tỉnh', 'tin nhắn'],
+              prompt: 'Bạn là một chuyên gia viết tin nhắn tán tỉnh. Khi người dùng cần, hãy viết tin nhắn ngắn gọn, tự nhiên, có duyên, không sến. Phù hợp với giai đoạn tìm hiểu.' },
+            { id: 'gift', emoji: '🎁', name: 'Chuyên Gia Quà Tặng', desc: 'Gợi ý quà tặng', category: 'love', tags: ['quà', 'tặng'],
+              prompt: 'Bạn là chuyên gia gợi ý quà tặng. Khi người dùng hỏi, hãy gợi ý 5-10 món quà phù hợp với người nhận, dịp, ngân sách. Kèm lý do tại sao nên tặng món đó.' },
         ];
 
         // ============ STATE ============
@@ -746,12 +746,12 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         ];
 
         let users = [
-            { id: 1, name: 'Quáº£n trá»‹ viÃªn', email: '', role: 'admin', avatarColor: 0, createdAt: new Date() },
-            { id: 2, name: 'Bá»‘', email: '', role: 'user', avatarColor: 7, createdAt: new Date() },
-            { id: 3, name: 'Máº¹', email: '', role: 'user', avatarColor: 1, createdAt: new Date() },
-            { id: 4, name: 'BÃ© Ti', email: '', role: 'guest', avatarColor: 4, createdAt: new Date() },
+            { id: 1, name: 'Quản trị viên', email: '', role: 'admin', avatarColor: 0, createdAt: new Date() },
+            { id: 2, name: 'Bố', email: '', role: 'user', avatarColor: 7, createdAt: new Date() },
+            { id: 3, name: 'Mẹ', email: '', role: 'user', avatarColor: 1, createdAt: new Date() },
+            { id: 4, name: 'Bé Ti', email: '', role: 'guest', avatarColor: 4, createdAt: new Date() },
         ];
-        state.currentUser = { id: 0, name: 'Gia Ä‘Ã¬nh', role: 'guest', avatarColor: 0 };
+        state.currentUser = { id: 0, name: 'Gia đình', role: 'guest', avatarColor: 0 };
 
         let editingUserId = null;
         let selectedRole = 'user';
@@ -765,7 +765,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             const u = state.currentUser;
             const initials = getInitials(u.name);
             const gradient = AVATAR_COLORS[u.avatarColor || 0];
-            const roleText = u.role === 'admin' ? 'Quáº£n trá»‹' : u.role === 'user' ? 'ThÃ nh viÃªn' : 'KhÃ¡ch';
+            const roleText = u.role === 'admin' ? 'Quản trị' : u.role === 'user' ? 'Thành viên' : 'Khách';
             document.getElementById('currentUserName').textContent = u.name;
             document.getElementById('currentUserRole').textContent = roleText;
             const av = document.getElementById('currentUserAvatar');
@@ -773,7 +773,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             document.getElementById('profileAvatar').textContent = initials;
             document.getElementById('profileAvatar').style.background = gradient;
             document.getElementById('profileName').textContent = u.name;
-            document.getElementById('profileRole').textContent = u.role === 'admin' ? 'Quáº£n trá»‹ viÃªn' : roleText;
+            document.getElementById('profileRole').textContent = u.role === 'admin' ? 'Quản trị viên' : roleText;
         }
         updateCurrentUserUI();
 
@@ -785,7 +785,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             
             if (view === 'discover') {
                 document.getElementById('viewDiscover').classList.remove('hidden');
-                document.getElementById('mobileTitle').textContent = 'KhÃ¡m phÃ¡';
+                document.getElementById('mobileTitle').textContent = 'Khám phá';
                 // Highlight menu
                 document.getElementById('menuDiscover').style.background = 'rgba(99,102,241,0.15)';
                 document.getElementById('menuDiscover').style.color = '#a5b4fc';
@@ -794,7 +794,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             } else {
                 document.getElementById('viewChat').classList.remove('hidden');
                 document.getElementById('viewChat').classList.add('flex');
-                document.getElementById('mobileTitle').textContent = state.currentAgent ? state.currentAgent.name : 'TrÃ² chuyá»‡n';
+                document.getElementById('mobileTitle').textContent = state.currentAgent ? state.currentAgent.name : 'Trò chuyện';
                 document.getElementById('menuChat').style.background = 'rgba(99,102,241,0.15)';
                 document.getElementById('menuChat').style.color = '#a5b4fc';
                 document.getElementById('menuDiscover').style.background = '';
@@ -837,7 +837,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 (state.currentCategory === 'all' && !search) ? 'block' : 'none';
             
             document.getElementById('agentsSectionTitle').textContent = 
-                search ? `Káº¿t quáº£ cho "${search}"` : state.currentCategory === 'all' ? 'Táº¥t cáº£ Agents' : 
+                search ? `Kết quả cho "${search}"` : state.currentCategory === 'all' ? 'Tất cả Agents' : 
                 document.querySelector(`.category-pill[data-cat="${state.currentCategory}"]`)?.textContent.trim() || 'Agents';
             
             document.getElementById('agentsCount').textContent = `${list.length} agent`;
@@ -845,8 +845,8 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             if (list.length === 0) {
                 document.getElementById('agentsGrid').innerHTML = `
                     <div class="col-span-full text-center py-12">
-                        <div class="text-4xl mb-3">ðŸ”</div>
-                        <div class="text-[13px] lobe-text-dim">KhÃ´ng tÃ¬m tháº¥y agent nÃ o</div>
+                        <div class="text-4xl mb-3">🔍</div>
+                        <div class="text-[13px] lobe-text-dim">Không tìm thấy agent nào</div>
                     </div>`;
                 return;
             }
@@ -901,12 +901,12 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         function renderHistory(filter = '') {
             const filtered = conversations.filter(c => c.title.toLowerCase().includes(filter.toLowerCase()));
             const html = filtered.length === 0
-                ? `<div class="text-[11px] lobe-text-mute px-2.5 py-3 italic">${filter ? 'KhÃ´ng tÃ¬m tháº¥y' : 'ChÆ°a cÃ³ cuá»™c trÃ² chuyá»‡n'}</div>`
+                ? `<div class="text-[11px] lobe-text-mute px-2.5 py-3 italic">${filter ? 'Không tìm thấy' : 'Chưa có cuộc trò chuyện'}</div>`
                 : filtered.map(c => {
                     const agent = AGENTS.find(a => a.id === c.agentId);
                     return `
                         <div class="history-item ${c.id === currentId ? 'active' : ''} flex items-center gap-2 px-2.5 py-1.5 cursor-pointer" onclick="loadConversation(${c.id})">
-                            <span class="text-[14px] flex-shrink-0">${agent ? agent.emoji : 'ðŸ’¬'}</span>
+                            <span class="text-[14px] flex-shrink-0">${agent ? agent.emoji : '💬'}</span>
                             <div class="flex-1 min-w-0">
                                 <div class="text-[12px] font-medium lobe-text-dim truncate leading-tight">${escapeHtml(c.title)}</div>
                                 <div class="text-[9px] lobe-text-mute mt-0.5">${relativeTime(c.createdAt)}</div>
@@ -926,9 +926,9 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             currentId = null;
             state.currentAgent = null;
             document.getElementById('welcomeScreen').style.display = 'flex';
-            document.getElementById('welcomeEmoji').textContent = 'âœ¨';
-            document.getElementById('welcomeTitle').textContent = 'Chá»n má»™t Agent';
-            document.getElementById('welcomeSubtitle').textContent = 'KhÃ¡m phÃ¡ vÃ  báº¯t Ä‘áº§u trÃ² chuyá»‡n vá»›i cÃ¡c trá»£ lÃ½ AI';
+            document.getElementById('welcomeEmoji').textContent = '✨';
+            document.getElementById('welcomeTitle').textContent = 'Chọn một Agent';
+            document.getElementById('welcomeSubtitle').textContent = 'Khám phá và bắt đầu trò chuyện với các trợ lý AI';
             document.getElementById('messagesArea').innerHTML = '';
             showView('discover');
             renderHistory();
@@ -971,11 +971,11 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         }
 
         function clearAllHistory() {
-            if (conversations.length === 0) { showToast('ChÆ°a cÃ³ lá»‹ch sá»­'); return; }
-            if (confirm('XÃ³a toÃ n bá»™ lá»‹ch sá»­?')) {
+            if (conversations.length === 0) { showToast('Chưa có lịch sử'); return; }
+            if (confirm('Xóa toàn bộ lịch sử?')) {
                 conversations = [];
                 newChat();
-                showToast('ÄÃ£ xÃ³a toÃ n bá»™');
+                showToast('Đã xóa toàn bộ');
             }
         }
 
@@ -993,14 +993,14 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 </div>`;
             }
             return `<div class="ai-msg flex gap-4 animate-fade-in" data-idx="${idx}">
-                <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-[16px]" style="background: rgba(99,102,241,0.15);">${agent ? agent.emoji : 'âœ¨'}</div>
+                <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-[16px]" style="background: rgba(99,102,241,0.15);">${agent ? agent.emoji : '✨'}</div>
                 <div class="flex-1 min-w-0">
                     <div class="text-[12px] font-medium lobe-text-dim mb-1">${agent ? agent.name : 'AI'}</div>
                     <div class="lobe-text-dim leading-relaxed text-[14px] lobe-markdown">${marked.parse(content)}</div>
                     <div class="ai-actions flex items-center gap-0.5 mt-1.5 -ml-1.5">
-                        <button onclick="copyMessage(this)" class="act-btn" title="Sao chÃ©p"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                        <button onclick="speakMessage(this)" class="act-btn" title="Äá»c to"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
-                        <button onclick="regenerateMessage(${idx})" class="act-btn" title="Táº¡o láº¡i"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="copyMessage(this)" class="act-btn" title="Sao chép"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="speakMessage(this)" class="act-btn" title="Đọc to"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="regenerateMessage(${idx})" class="act-btn" title="Tạo lại"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
                         <button class="act-btn"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i></button>
                         <button class="act-btn"><i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i></button>
                     </div>
@@ -1028,9 +1028,9 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 const orig = btn.innerHTML;
                 btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5" style="color:#10b981;"></i>';
                 lucide.createIcons();
-                showToast('ÄÃ£ sao chÃ©p');
+                showToast('Đã sao chép');
                 setTimeout(() => { btn.innerHTML = orig; lucide.createIcons(); }, 1500);
-            }).catch(() => showToast('KhÃ´ng thá»ƒ sao chÃ©p'));
+            }).catch(() => showToast('Không thể sao chép'));
         }
         function speakMessage(btn) {
             const content = btn.closest('.ai-msg').querySelector('.lobe-markdown').innerText;
@@ -1038,7 +1038,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 speechSynthesis.cancel();
                 btn.classList.remove('speaking');
                 currentUtterance = null;
-                showToast('ÄÃ£ dá»«ng Ä‘á»c');
+                showToast('Đã dừng đọc');
                 return;
             }
             speechSynthesis.cancel();
@@ -1047,9 +1047,9 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             currentUtterance.lang = 'vi-VN';
             const viVoice = speechSynthesis.getVoices().find(v => v.lang.startsWith('vi'));
             if (viVoice) currentUtterance.voice = viVoice;
-            currentUtterance.onstart = () => { btn.classList.add('speaking'); showToast('ðŸ”Š Äang Ä‘á»c...'); };
+            currentUtterance.onstart = () => { btn.classList.add('speaking'); showToast('🔊 Đang đọc...'); };
             currentUtterance.onend = () => { btn.classList.remove('speaking'); currentUtterance = null; };
-            currentUtterance.onerror = () => { btn.classList.remove('speaking'); showToast('KhÃ´ng thá»ƒ Ä‘á»c'); };
+            currentUtterance.onerror = () => { btn.classList.remove('speaking'); showToast('Không thể đọc'); };
             speechSynthesis.speak(currentUtterance);
         }
         if ('speechSynthesis' in window) speechSynthesis.getVoices();
@@ -1097,10 +1097,10 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                 const reply = data.choices[0].message.content;
                 document.getElementById('typing')?.remove();
                 await appendAIMessage(conv, reply);
-                if (isRegen) showToast('ÄÃ£ táº¡o láº¡i');
+                if (isRegen) showToast('Đã tạo lại');
             } catch (e) {
                 document.getElementById('typing')?.remove();
-                await appendAIMessage(conv, `Xin chÃ o! MÃ¬nh lÃ  **${agent.name}** â€” ${agent.desc}.\n\nHiá»‡n táº¡i mÃ¬nh Ä‘ang cháº¡y cháº¿ Ä‘á»™ demo vÃ¬ chÆ°a káº¿t ná»‘i Worker. Khi báº¡n qua Cloudflare, mÃ¬nh sáº½ tráº£ lá»i tháº­t nhÃ©! ðŸ’œ\n\n**Thá»­ há»i mÃ¬nh:** ${agent.tags.map(t => '`' + t + '`').join(' ')}`);
+                await appendAIMessage(conv, `Xin chào! Mình là **${agent.name}** — ${agent.desc}.\n\nHiện tại mình đang chạy chế độ demo vì chưa kết nối Worker. Khi bạn qua Cloudflare, mình sẽ trả lời thật nhé! 💜\n\n**Thử hỏi mình:** ${agent.tags.map(t => '`' + t + '`').join(' ')}`);
             }
         }
 
@@ -1117,9 +1117,9 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                     <div class="text-[12px] font-medium lobe-text-dim mb-1">${agent.name}</div>
                     <div class="lobe-text-dim leading-relaxed text-[14px] lobe-markdown" data-body></div>
                     <div class="ai-actions flex items-center gap-0.5 mt-1.5 -ml-1.5 opacity-0">
-                        <button onclick="copyMessage(this)" class="act-btn" title="Sao chÃ©p"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                        <button onclick="speakMessage(this)" class="act-btn" title="Äá»c to"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
-                        <button onclick="regenerateMessage(${idx})" class="act-btn" title="Táº¡o láº¡i"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="copyMessage(this)" class="act-btn" title="Sao chép"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="speakMessage(this)" class="act-btn" title="Đọc to"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="regenerateMessage(${idx})" class="act-btn" title="Tạo lại"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
                         <button class="act-btn"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i></button>
                         <button class="act-btn"><i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i></button>
                     </div>
@@ -1153,7 +1153,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         async function sendMessage() {
             const text = messageInput.value.trim();
             if (!text) return;
-            if (!state.currentAgent) { showToast('Vui lÃ²ng chá»n Agent trÆ°á»›c'); showView('discover'); return; }
+            if (!state.currentAgent) { showToast('Vui lòng chọn Agent trước'); showView('discover'); return; }
             
             let conv;
             if (currentId === null) conv = createConversation(state.currentAgent, text);
@@ -1177,11 +1177,11 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         }
         function relativeTime(date) {
             const diff = Math.floor((Date.now() - date) / 1000);
-            if (diff < 60) return 'Vá»«a xong';
-            if (diff < 3600) return Math.floor(diff / 60) + ' phÃºt';
-            if (diff < 86400) return Math.floor(diff / 3600) + ' giá»';
-            if (diff < 172800) return 'HÃ´m qua';
-            return Math.floor(diff / 86400) + ' ngÃ y';
+            if (diff < 60) return 'Vừa xong';
+            if (diff < 3600) return Math.floor(diff / 60) + ' phút';
+            if (diff < 86400) return Math.floor(diff / 3600) + ' giờ';
+            if (diff < 172800) return 'Hôm qua';
+            return Math.floor(diff / 86400) + ' ngày';
         }
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -1202,7 +1202,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             document.querySelectorAll('.lobe-input-inner').forEach(el => {
                 el.style.background = state.lightMode ? '#ffffff' : '#111111';
             });
-            showToast(state.lightMode ? 'â˜€ï¸ Cháº¿ Ä‘á»™ SÃ¡ng' : 'ðŸŒ™ Cháº¿ Ä‘á»™ Tá»‘i');
+            showToast(state.lightMode ? '☀️ Chế độ Sáng' : '🌙 Chế độ Tối');
         }
 
         // ============ MOBILE SIDEBAR ============
@@ -1237,8 +1237,8 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         }
         function linkAccount(p) {
             const names = { google: 'Google', apple: 'Apple', facebook: 'Facebook' };
-            showToast(`Äang má»Ÿ Ä‘Äƒng nháº­p ${names[p]}...`);
-            setTimeout(() => showToast('Sáº½ hoáº¡t Ä‘á»™ng khi qua Cloudflare!'), 1500);
+            showToast(`Đang mở đăng nhập ${names[p]}...`);
+            setTimeout(() => showToast('Sẽ hoạt động khi qua Cloudflare!'), 1500);
         }
 
         // ============ ADMIN ============
@@ -1255,14 +1255,14 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             if (pwd === ADMIN_PASSWORD) {
                 state.isAdmin = true;
                 closeAdminLogin();
-                showToast('âœ… ÄÄƒng nháº­p quáº£n trá»‹ thÃ nh cÃ´ng');
+                showToast('✅ Đăng nhập quản trị thành công');
                 document.getElementById('tabUsers').classList.remove('hidden');
                 document.getElementById('adminLoginSection').classList.add('hidden');
                 document.getElementById('adminLogoutSection').classList.remove('hidden');
                 switchTab('users');
                 renderUsers();
             } else {
-                showToast('âŒ Máº­t kháº©u khÃ´ng Ä‘Ãºng');
+                showToast('❌ Mật khẩu không đúng');
                 document.getElementById('adminPasswordInput').value = '';
             }
         }
@@ -1272,14 +1272,14 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             document.getElementById('adminLoginSection').classList.remove('hidden');
             document.getElementById('adminLogoutSection').classList.add('hidden');
             switchTab('profile');
-            showToast('ÄÃ£ thoÃ¡t cháº¿ Ä‘á»™ quáº£n trá»‹');
+            showToast('Đã thoát chế độ quản trị');
         }
 
         function renderUsers(filter = '') {
             const filtered = users.filter(u => u.name.toLowerCase().includes(filter.toLowerCase()));
-            document.getElementById('userCount').textContent = `${users.length} ngÆ°á»i dÃ¹ng`;
+            document.getElementById('userCount').textContent = `${users.length} người dùng`;
             if (filtered.length === 0) {
-                document.getElementById('usersList').innerHTML = `<div class="text-center text-[12px] lobe-text-mute py-6 italic">${filter ? 'KhÃ´ng tÃ¬m tháº¥y' : 'ChÆ°a cÃ³ thÃ nh viÃªn'}</div>`;
+                document.getElementById('usersList').innerHTML = `<div class="text-center text-[12px] lobe-text-mute py-6 italic">${filter ? 'Không tìm thấy' : 'Chưa có thành viên'}</div>`;
                 return;
             }
             document.getElementById('usersList').innerHTML = filtered.map(u => `
@@ -1288,9 +1288,9 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2">
                             <div class="text-[13px] font-medium lobe-text truncate">${escapeHtml(u.name)}</div>
-                            <span class="role-badge role-${u.role}">${u.role === 'admin' ? 'Admin' : u.role === 'user' ? 'ThÃ nh viÃªn' : 'KhÃ¡ch'}</span>
+                            <span class="role-badge role-${u.role}">${u.role === 'admin' ? 'Admin' : u.role === 'user' ? 'Thành viên' : 'Khách'}</span>
                         </div>
-                        <div class="text-[10px] lobe-text-mute truncate mt-0.5">${u.email || 'ChÆ°a cÃ³ email'}</div>
+                        <div class="text-[10px] lobe-text-mute truncate mt-0.5">${u.email || 'Chưa có email'}</div>
                     </div>
                     <div class="flex items-center gap-0.5">
                         <button onclick="editUser(${u.id})" class="act-btn"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
@@ -1305,7 +1305,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             editingUserId = null;
             selectedRole = 'user';
             selectedColor = Math.floor(Math.random() * AVATAR_COLORS.length);
-            document.getElementById('addUserTitle').textContent = 'ThÃªm thÃ nh viÃªn';
+            document.getElementById('addUserTitle').textContent = 'Thêm thành viên';
             document.getElementById('newUserName').value = '';
             document.getElementById('newUserEmail').value = '';
             renderColorPicker();
@@ -1319,7 +1319,7 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
             editingUserId = id;
             selectedRole = u.role;
             selectedColor = u.avatarColor;
-            document.getElementById('addUserTitle').textContent = 'Sá»­a thÃ nh viÃªn';
+            document.getElementById('addUserTitle').textContent = 'Sửa thành viên';
             document.getElementById('newUserName').value = u.name;
             document.getElementById('newUserEmail').value = u.email || '';
             renderColorPicker();
@@ -1354,14 +1354,14 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         function saveUser() {
             const name = document.getElementById('newUserName').value.trim();
             const email = document.getElementById('newUserEmail').value.trim();
-            if (!name) { showToast('Vui lÃ²ng nháº­p tÃªn'); return; }
+            if (!name) { showToast('Vui lòng nhập tên'); return; }
             if (editingUserId) {
                 const u = users.find(x => x.id === editingUserId);
                 if (u) { u.name = name; u.email = email; u.role = selectedRole; u.avatarColor = selectedColor; }
-                showToast('ÄÃ£ cáº­p nháº­t');
+                showToast('Đã cập nhật');
             } else {
                 users.push({ id: Date.now(), name, email, role: selectedRole, avatarColor: selectedColor, createdAt: new Date() });
-                showToast('ÄÃ£ thÃªm thÃ nh viÃªn');
+                showToast('Đã thêm thành viên');
             }
             closeAddUserModal();
             renderUsers(document.getElementById('userSearchInput').value);
@@ -1369,10 +1369,10 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         function deleteUser(id) {
             const u = users.find(x => x.id === id);
             if (!u) return;
-            if (!confirm(`XÃ³a thÃ nh viÃªn "${u.name}"?`)) return;
+            if (!confirm(`Xóa thành viên "${u.name}"?`)) return;
             users = users.filter(x => x.id !== id);
             renderUsers(document.getElementById('userSearchInput').value);
-            showToast('ÄÃ£ xÃ³a');
+            showToast('Đã xóa');
         }
 
         document.addEventListener('keydown', (e) => {
@@ -1386,4 +1386,3 @@ body.light #appRoot{background-color:#fafafa;color:#18181b;}
         showView('discover');
         lucide.createIcons();
     </script>
-
